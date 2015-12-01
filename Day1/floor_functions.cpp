@@ -1,4 +1,4 @@
-#include "get_destination_floor.hpp"
+#include "floor_functions.hpp"
 
 int get_destination_floor(std::string movement) {
     int floor = 0;

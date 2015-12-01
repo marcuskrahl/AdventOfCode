@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
-#include "get_destination_floor.hpp"
+#include "floor_functions.hpp"
 
 TEST_CASE("Floor is correctly determined","[floor]") {
     REQUIRE(get_destination_floor("") == 0);

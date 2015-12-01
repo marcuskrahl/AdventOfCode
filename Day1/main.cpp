@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "get_destination_floor.hpp"
+#include "floor_functions.hpp"
 
 int main(int argc, char* argv[]) {
     std::string movement;
