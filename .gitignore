@@ -27,3 +27,7 @@
 *.out
 *.app
 day1
+day1_tests
+
+# Temporary vim files
+*.swp
