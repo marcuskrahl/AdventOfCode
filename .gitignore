@@ -29,5 +29,8 @@
 day1
 day1_tests
 
+# Input files
+input
+
 # Temporary vim files
 *.swp
