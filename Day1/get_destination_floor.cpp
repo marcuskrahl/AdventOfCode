@@ -1,5 +1,13 @@
 #include "get_destination_floor.hpp"
 
 int get_destination_floor(std::string movement) {
-    return 0;
+    int floor = 0;
+    for(const auto& c: movement) {
+        if (c == '(') {
+            floor++;
+        } else if (c==')') {
+            floor--;
+        }
+    }
+    return floor;
 }
