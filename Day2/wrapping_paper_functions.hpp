@@ -17,5 +17,5 @@ class Present {
 };
 
 unsigned int calculate_wrapping_paper_area(const Present& present);
-
+unsigned int calculate_ribbon_length(const Present& present);
 #endif

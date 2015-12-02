@@ -21,3 +21,9 @@ TEST_CASE("Wrapping paper area is correctly calculated","[area_calculation]") {
     REQUIRE(calculate_wrapping_paper_area(present2) == 43);
     REQUIRE(calculate_wrapping_paper_area(Present("20x3x11")) == 659);
 }
+
+TEST_CASE("Ribbon length is correctly calculated","[ribbon_length]") {
+    REQUIRE(calculate_ribbon_length(Present("2x3x4")) == 34);
+    REQUIRE(calculate_ribbon_length(Present("1x1x10")) == 14);
+    REQUIRE(calculate_ribbon_length(Present("20x3x11")) == 688);
+}

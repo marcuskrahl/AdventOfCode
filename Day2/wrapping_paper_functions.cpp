@@ -58,4 +58,33 @@ unsigned int calculate_wrapping_paper_area(const Present& present) {
     return 2*front + 2*top + 2*side + smallest_area;
 }
 
+unsigned int calculate_length_of_two_shortest_sides(const Present& present) {
+    auto length = present.get_length();
+    auto width = present.get_width();
+    auto height = present.get_height();
 
+    if (length > width) {
+        if (length > height) {
+            return width + height;
+        } else {
+            return length + width;
+        }
+    } else {
+        if (width > height) {
+            return length + height;
+        } else {
+            return length + width;
+        }
+    }
+}
+
+unsigned int calculate_volume(const Present& present) {
+    return present.get_length() * present.get_width() * present.get_height();
+}
+
+unsigned int calculate_ribbon_length(const Present& present) {
+    unsigned int length_of_two_shortest_sides = calculate_length_of_two_shortest_sides(present);
+    unsigned int volume = calculate_volume(present);
+
+    return 2*length_of_two_shortest_sides + volume;
+}
