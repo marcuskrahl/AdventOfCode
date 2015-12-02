@@ -16,7 +16,17 @@ void run_part_one() {
 
 }
 void run_part_two() {
+    unsigned int total_length = 0;
+    std::string dimensions;
+    while (std::cin >> dimensions) {
+        Present present(dimensions);
+        unsigned int length = calculate_ribbon_length(present);
+        std::cout << length << std::endl;
+        total_length += length;
+    }
+    std::cout << total_length << std::endl;
 }
+
 
 int main(int argc, char* argv[]) {
     if (argc > 1) {
