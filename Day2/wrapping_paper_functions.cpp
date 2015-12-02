@@ -43,7 +43,7 @@ unsigned int get_smallest_area(unsigned int area1, unsigned int area2, unsigned 
         if (area2 < area3) {
             return area2;
         } else {
-            return area1;
+            return area3;
         }
     }
 

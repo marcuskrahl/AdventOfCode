@@ -19,4 +19,5 @@ TEST_CASE("Wrapping paper area is correctly calculated","[area_calculation]") {
 
     REQUIRE(calculate_wrapping_paper_area(present1) == 58);
     REQUIRE(calculate_wrapping_paper_area(present2) == 43);
+    REQUIRE(calculate_wrapping_paper_area(Present("20x3x11")) == 659);
 }
