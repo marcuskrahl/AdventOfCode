@@ -1,5 +1,5 @@
 DAY = day2
-SOURCE_FILES = 
+SOURCE_FILES = wrapping_paper_functions.cpp
 
 all: main.cpp
 	g++ -g -std=c++14 -Wall -o $(DAY) main.cpp $(SOURCE_FILES)
