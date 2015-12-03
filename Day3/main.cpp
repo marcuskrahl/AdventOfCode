@@ -1,7 +1,15 @@
 #include <iostream>
 #include <string>
 
+#include "SantaMap.hpp"
+
 void run_part_one() {
+    SantaMap map;
+    char movement;
+    while (std::cin>>movement) {
+        map.move(movement);
+    }
+    std::cout << map.get_visited_houses() << std::endl;
 }
 void run_part_two() {
 }
