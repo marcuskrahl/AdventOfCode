@@ -13,7 +13,7 @@ class SantaMap {
         static const unsigned int max_map_length = 1000;
         unsigned int pos_x = max_map_length/2;
         unsigned int pos_y = max_map_length/2;
-        std::array<std::array<unsigned char,max_map_length>, max_map_length> map;
+        std::array<std::array<unsigned char,max_map_length>, max_map_length> map = {{{{0}}}};
         unsigned int number_of_visited_houses = 0;
         void increment_counter_if_new_visited_house();
         void move_up();
