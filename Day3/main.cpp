@@ -12,6 +12,16 @@ void run_part_one() {
     std::cout << map.get_visited_houses() << std::endl;
 }
 void run_part_two() {
+    SantaMap santas_map;
+    SantaMap robots_map;
+    char santas_movement;
+    char robots_movement;
+    while (std::cin>>santas_movement >> robots_movement) {
+        santas_map.move(santas_movement);
+        robots_map.move(robots_movement);
+    }
+    SantaMap combined_map(santas_map,robots_map);
+    std::cout << combined_map.get_visited_houses() << std::endl;
 }
 
 
