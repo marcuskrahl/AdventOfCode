@@ -7,6 +7,7 @@
 class SantaMap {
     public:
         SantaMap();
+        SantaMap(const SantaMap& map1, const SantaMap& map2);
         void move(const char movement);
         unsigned int get_visited_houses() const;
     private:

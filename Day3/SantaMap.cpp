@@ -5,6 +5,16 @@ SantaMap::SantaMap() {
     map[pos_x][pos_y] = 1;
     number_of_visited_houses++;
 }
+SantaMap::SantaMap(const SantaMap& map1, const SantaMap& map2) {
+    for (unsigned int x = 0; x < max_map_length; x++) {
+        for(unsigned int y = 0; y < max_map_length; y++) {
+            if ((map1.map[x][y] > 0) || (map2.map[x][y] > 0)) {
+                number_of_visited_houses++;
+                map[x][y] = 1;
+            }
+        }
+    }
+}
 
 void SantaMap::move(const char movement) {
     switch(movement) {

@@ -36,6 +36,21 @@ TEST_CASE("Santa movement is correctly calculated for back and forth movement","
     REQUIRE(map.get_visited_houses() == 2);
 }
 
+TEST_CASE("Movements of distinct Santas are correctly combined", "[santa movement]") {
+    SantaMap map1;
+
+    map1.move('<');
+    map1.move('^');
+
+    SantaMap map2;
+    
+    map2.move('<');
+    map2.move('v');
+
+    SantaMap combined_map(map1, map2);
+
+    REQUIRE(combined_map.get_visited_houses() == 4);
+}
 
 
 
