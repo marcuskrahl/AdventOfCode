@@ -1,5 +1,5 @@
 DAY = day3
-SOURCE_FILES = 
+SOURCE_FILES = SantaMap.cpp
 
 all: main.cpp
 	g++ -g -std=c++14 -Wall -o $(DAY) main.cpp $(SOURCE_FILES)
