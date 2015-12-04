@@ -4,9 +4,10 @@
 #include "md5.hpp"
 
 void run_part_one() {
-    std::cout << find_lowest_zeroes_value("ckczppom") << std::endl;
+    std::cout << find_lowest_zeroes_value("ckczppom",5) << std::endl;
 }
 void run_part_two() {
+    std::cout << find_lowest_zeroes_value("ckczppom",6) << std::endl;
 }
 
 

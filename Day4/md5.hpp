@@ -5,6 +5,6 @@
 
 std::string md5(const std::string& input); 
 
-unsigned int find_lowest_zeroes_value(const std::string& base_string);
+unsigned int find_lowest_zeroes_value(const std::string& base_string, unsigned int number_of_zeroes);
 
 #endif

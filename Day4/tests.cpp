@@ -9,5 +9,5 @@ TEST_CASE("md5 value is correctly calculated","[md5]") {
 }
 
 TEST_CASE("lowest value with zeroes at the beginning of md5 sum is found","[md5 search]") {
-    REQUIRE(find_lowest_zeroes_value("abcdef") == 609043);
+    REQUIRE(find_lowest_zeroes_value("abcdef",5) == 609043);
 }
