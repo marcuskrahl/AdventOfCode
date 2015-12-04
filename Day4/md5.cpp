@@ -22,3 +22,17 @@ std::string output_to_hex_string(unsigned char *output) {
     }
     return hex_stream.str();
 }
+
+bool is_target_md5_value(const std::string& md5_value) {
+    return md5_value[0] == '0' && md5_value[1] == '0' && md5_value[2] == '0' && md5_value[3] == '0' && md5_value[4] == '0';
+}
+
+unsigned int find_lowest_zeroes_value(const std::string& base_string) {
+    unsigned int addition = 0;
+    std::string md5_value;
+    do {
+        addition++;
+        md5_value = md5(base_string+std::to_string(addition));
+    } while (!is_target_md5_value(md5_value));
+    return addition;
+}
