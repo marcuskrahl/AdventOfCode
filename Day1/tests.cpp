@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN
-#include "catch.hpp"
+#include "../lib/catch.hpp"
 
 #include "floor_functions.hpp"
 
