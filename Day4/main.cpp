@@ -1,7 +1,10 @@
 #include <iostream>
 #include <string>
 
+#include "md5.hpp"
+
 void run_part_one() {
+    std::cout << find_lowest_zeroes_value("ckczppom") << std::endl;
 }
 void run_part_two() {
 }
