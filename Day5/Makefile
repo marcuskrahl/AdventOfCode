@@ -1,5 +1,5 @@
 DAY = day5
-SOURCE_FILES = 
+SOURCE_FILES = naughty_or_nice.cpp
 LIBRARIES = 
 
 all: main.cpp
