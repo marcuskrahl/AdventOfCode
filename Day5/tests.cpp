@@ -14,3 +14,12 @@ TEST_CASE("Word is nice if it has at least one double letter","[naughty or nice]
     REQUIRE(is_nice("aeuu") == true);
     REQUIRE(is_nice("addeu") == true);
 }
+
+TEST_CASE("Word is nice if it does not contain restricted sequences","[naughty or nice]") {
+    REQUIRE(is_nice("addeu") == true);
+    REQUIRE(is_nice("acddeu") == false);
+    REQUIRE(is_nice("abddeu") == false);
+    REQUIRE(is_nice("apqddeu") == false);
+    REQUIRE(is_nice("axyddeu") == false);
+    REQUIRE(is_nice("axzddeu") == true);
+}
