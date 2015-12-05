@@ -98,5 +98,5 @@ bool has_repeating_char_with_gap(const std::string& input) {
 }
 
 bool is_nice2(const std::string& input) {
-    return has_repeating_char_double(input);
+    return has_repeating_char_double(input) && has_repeating_char_with_gap(input);
 }

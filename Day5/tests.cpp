@@ -38,3 +38,10 @@ TEST_CASE("Word is nice if it contains a repeating char with a gap","[naughty or
     REQUIRE(is_nice2("ddabadd") == true);
     REQUIRE(is_nice2("ddaaadd") == true);
 }
+
+TEST_CASE("Word is nice if both rules apply","[naughty or nice 2]") {
+    REQUIRE(is_nice2("bab") == false);
+    REQUIRE(is_nice2("cdbcd") == false);
+    REQUIRE(is_nice2("cdcd") == true);
+
+}
