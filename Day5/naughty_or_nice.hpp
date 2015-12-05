@@ -4,5 +4,6 @@
 #include <string>
 
 bool is_nice(const std::string& input);
+bool is_nice2(const std::string& input);
 
 #endif

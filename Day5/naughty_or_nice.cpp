@@ -60,3 +60,31 @@ bool has_no_restricted_sequence(const std::string& input) {
 bool is_nice(const std::string& input) {
     return has_at_least_three_vowels(input) && has_at_least_one_double_letter(input) && has_no_restricted_sequence(input);
 }
+
+bool is_repeating_char_double(const char& c1, const char& c2, const std::string& input, std::string::const_iterator it) {
+    if (it == input.end()) {
+        return false;
+    }
+    for (it++; it != input.end(); it++) {
+        if ((*(it-1) == c1) && (*it == c2)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool has_repeating_char_double(const std::string& input) {
+    if (input == "") {
+        return false;     
+    }
+    for (auto it = input.begin()+1; it != input.end(); it++) {
+        if (is_repeating_char_double(*(it-1), *it, input, it+1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool is_nice2(const std::string& input) {
+    return has_repeating_char_double(input);
+}

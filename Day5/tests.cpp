@@ -23,3 +23,11 @@ TEST_CASE("Word is nice if it does not contain restricted sequences","[naughty o
     REQUIRE(is_nice("axyddeu") == false);
     REQUIRE(is_nice("axzddeu") == true);
 }
+
+TEST_CASE("Word is nice if it contains a repeating character double","[naughty or nice 2]") {
+    REQUIRE(is_nice2("") == false);
+    REQUIRE(is_nice2("aaa") == false);
+    REQUIRE(is_nice2("aaeaa") == true);
+    REQUIRE(is_nice2("bqjcdcxabwqja") == true);
+
+}
