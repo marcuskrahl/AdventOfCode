@@ -85,6 +85,18 @@ bool has_repeating_char_double(const std::string& input) {
     return false;
 }
 
+bool has_repeating_char_with_gap(const std::string& input) {
+    if (input.length() < 3) {
+        return false;
+    }
+    for (auto it1 = input.begin(), it2 = input.begin() + 2; it1 != input.end(), it2 != input.end(); it1++,it2++) {
+        if(*it1 == *it2) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool is_nice2(const std::string& input) {
     return has_repeating_char_double(input);
 }

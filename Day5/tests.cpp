@@ -29,5 +29,12 @@ TEST_CASE("Word is nice if it contains a repeating character double","[naughty o
     REQUIRE(is_nice2("aaa") == false);
     REQUIRE(is_nice2("aaeaa") == true);
     REQUIRE(is_nice2("bqjcdcxabwqja") == true);
+}
 
+TEST_CASE("Word is nice if it contains a repeating char with a gap","[naughty or nice 2]") {
+    REQUIRE(is_nice2("") == false);
+    REQUIRE(is_nice2("a") == false);
+    REQUIRE(is_nice2("aa") == false);
+    REQUIRE(is_nice2("ddabadd") == true);
+    REQUIRE(is_nice2("ddaaadd") == true);
 }
