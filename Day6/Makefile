@@ -1,5 +1,5 @@
 DAY = day6
-SOURCE_FILES = LightCommand.cpp
+SOURCE_FILES = LightCommand.cpp LightMap.cpp
 LIBRARIES = 
 
 all: main.cpp

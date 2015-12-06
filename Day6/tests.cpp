@@ -2,6 +2,7 @@
 #include "../lib/catch.hpp"
 
 #include "LightCommand.hpp"
+#include "LightMap.hpp"
 
 TEST_CASE("turn on inputs are correctly parsed","[input parsing]") {
 
@@ -37,4 +38,14 @@ TEST_CASE("toggle inputs are correctly parsed","[input parsing]") {
     REQUIRE(command->get_end_y() == 999);
     REQUIRE(command->perform(10,10,0) == 1);
     REQUIRE(command->perform(10,10,1) == 0);
+}
+
+TEST_CASE("Commands are applied to a light map","[light map]") {
+    LightMap light_map;
+
+    REQUIRE(light_map.get_active_lights() == 0);
+
+    light_map.apply_command(*LightCommand::from_input("toggle 50,50 through 51,51"));
+
+    REQUIRE(light_map.get_active_lights() == 4);
 }
