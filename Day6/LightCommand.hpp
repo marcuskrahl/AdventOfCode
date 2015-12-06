@@ -38,4 +38,11 @@ class ToggleLightCommand : public LightCommand {
         virtual unsigned char perform(unsigned int x, unsigned int y, unsigned char previous_value) const;
 };
 
+class BrightnessTurnOnLightCommand : public LightCommand {
+    public:
+        BrightnessTurnOnLightCommand(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y);
+        virtual unsigned char perform(unsigned int x, unsigned int y, unsigned char previous_value) const;
+};
+
+
 #endif

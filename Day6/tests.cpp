@@ -49,3 +49,11 @@ TEST_CASE("Commands are applied to a light map","[light map]") {
 
     REQUIRE(light_map.get_active_lights() == 4);
 }
+
+TEST_CASE("new turn on increases brightness by 1","[input parsing 2]") {
+    auto command = LightCommand::from_input("brightness turn on 0,0 through 999,999");
+
+    REQUIRE(command->perform(0,0,0) == 1);
+    REQUIRE(command->perform(0,0,1) == 2);
+    REQUIRE(command->perform(0,0,7) == 8);
+}
