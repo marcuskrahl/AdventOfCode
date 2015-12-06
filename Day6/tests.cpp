@@ -65,3 +65,11 @@ TEST_CASE("new turn off decreases brightness by 1","[input parsing 2]") {
     REQUIRE(command->perform(0,0,7) == 6);
     REQUIRE(command->perform(0,0,0) == 0);
 }
+
+TEST_CASE("new toggle increases brightness by 2","[input parsing 2]") {
+    auto command = LightCommand::from_input("brightness toggle 0,0 through 999,999");
+
+    REQUIRE(command->perform(0,0,0) == 2);
+    REQUIRE(command->perform(0,0,1) == 3);
+    REQUIRE(command->perform(0,0,7) == 9);
+}
