@@ -12,6 +12,17 @@ unsigned int LightMap::get_active_lights() const {
     return active_lights;
 }
 
+unsigned int LightMap::get_brightness() const {
+    unsigned int brightness = 0;
+    for (unsigned int i = 0; i < map.size(); i++) {
+        for(unsigned int j = 0; j < map[i].size(); j++) {
+            brightness += map[i][j];
+        }
+    }
+    return brightness;
+}
+
+
 void LightMap::apply_command(const LightCommand& command) {
     for (unsigned int i = command.get_start_x(); i<= command.get_end_x(); i++) {
         for (unsigned int j = command.get_start_y(); j <= command.get_end_y(); j++) {

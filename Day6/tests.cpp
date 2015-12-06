@@ -73,3 +73,19 @@ TEST_CASE("new toggle increases brightness by 2","[input parsing 2]") {
     REQUIRE(command->perform(0,0,1) == 3);
     REQUIRE(command->perform(0,0,7) == 9);
 }
+
+
+TEST_CASE("Brightness can be retrieved from light map","[light map]") {
+    LightMap light_map;
+
+    REQUIRE(light_map.get_brightness() == 0);
+
+    light_map.apply_command(*LightCommand::from_input("brightness turn on 50,50 through 53,53"));
+
+    REQUIRE(light_map.get_brightness() == 16);
+
+    light_map.apply_command(*LightCommand::from_input("brightness toggle 51,51 through 52,52"));
+
+    REQUIRE(light_map.get_brightness() == 24);
+
+}
