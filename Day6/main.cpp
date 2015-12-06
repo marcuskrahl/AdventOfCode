@@ -13,6 +13,12 @@ void run_part_one() {
     std::cout << light_map.get_active_lights() << std::endl;
 }
 void run_part_two() {
+    LightMap light_map;
+    std::string command;
+    while (std::getline(std::cin,command)) {
+        light_map.apply_command(*LightCommand::from_input("brightness "+command));
+    }
+    std::cout << light_map.get_brightness() << std::endl;
 }
 
 
