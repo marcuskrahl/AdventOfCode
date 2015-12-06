@@ -62,6 +62,19 @@ unsigned char BrightnessTurnOnLightCommand::perform(unsigned int x, unsigned int
     return previous_value + 1;
 }
 
+BrightnessTurnOffLightCommand::BrightnessTurnOffLightCommand(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y) : 
+    LightCommand(start_x,start_y,end_x,end_y) {
+
+}
+
+unsigned char BrightnessTurnOffLightCommand::perform(unsigned int x, unsigned int y, unsigned char previous_value) const {
+    if (previous_value > 0) {
+        return previous_value - 1;
+    } else {
+        return 0;
+    }
+}
+
 
 std::unique_ptr<LightCommand> LightCommand::from_input(const std::string& input) {
     std::smatch match;
@@ -82,6 +95,8 @@ std::unique_ptr<LightCommand> LightCommand::from_input(const std::string& input)
         return std::unique_ptr<LightCommand>(new ToggleLightCommand(start_x,start_y,end_x,end_y));
     }  else if (command == "brightness turn on") {
         return std::unique_ptr<LightCommand>(new BrightnessTurnOnLightCommand(start_x,start_y,end_x,end_y));
+    } else if (command == "brightness turn off") {
+        return std::unique_ptr<LightCommand>(new BrightnessTurnOffLightCommand(start_x,start_y,end_x,end_y));
     } else {
         throw "invalid command";
     }
