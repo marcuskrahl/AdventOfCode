@@ -35,6 +35,15 @@ unsigned char TurnOnLightCommand::perform(unsigned int x, unsigned int y, unsign
     return 1;
 }
 
+TurnOffLightCommand::TurnOffLightCommand(unsigned int start_x, unsigned int start_y, unsigned int end_x, unsigned int end_y) : 
+    LightCommand(start_x,start_y,end_x,end_y) {
+
+}
+
+unsigned char TurnOffLightCommand::perform(unsigned int x, unsigned int y, unsigned char previous_value) const {
+    return 0;
+}
+
 std::unique_ptr<LightCommand> LightCommand::from_input(const std::string& input) {
     std::smatch match;
     if ( ! std::regex_match(input,match,command_regex)) {
@@ -48,6 +57,9 @@ std::unique_ptr<LightCommand> LightCommand::from_input(const std::string& input)
     
     if (command == "turn on") {
         return std::unique_ptr<LightCommand>(new TurnOnLightCommand(start_x,start_y,end_x,end_y));
+    } else if (command == "turn off") {
+
+        return std::unique_ptr<LightCommand>(new TurnOffLightCommand(start_x,start_y,end_x,end_y));
     } else {
         throw "invalid command";
     }
