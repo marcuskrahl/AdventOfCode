@@ -24,6 +24,7 @@ class Circuit {
         unsigned short get_value(const std::string& node_id);
     private:
         std::map<std::string,Node> nodes;
+        std::map<std::string,unsigned short> stored_values;
 };
 
 

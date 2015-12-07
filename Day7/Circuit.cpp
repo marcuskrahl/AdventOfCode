@@ -47,9 +47,15 @@ void Circuit::add_node(const std::string& input) {
 
 unsigned short Circuit::get_value(const std::string& node_id) {
     const Node& node = nodes.find(node_id)->second;
+    auto stored_value = stored_values.find(node_id); 
+    if (stored_value != stored_values.end()) {
+        return stored_value->second;
+    }
     unsigned short parent_value_1 = node.parent_id_1 == "" ? 0 : get_value(node.parent_id_1);
     unsigned short parent_value_2 = node.parent_id_2 == "" ? 0 : get_value(node.parent_id_2);
-    return node.command->evaluate(parent_value_1,parent_value_2);
+    unsigned short value = node.command->evaluate(parent_value_1,parent_value_2);
+    stored_values.insert(std::pair<std::string,unsigned short>(node_id,value));
+    return value;
 }
 
 
