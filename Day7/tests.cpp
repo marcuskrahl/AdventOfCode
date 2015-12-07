@@ -63,6 +63,7 @@ TEST_CASE("circuit can be built with strings","[circuit evaluation]") {
     circuit.add_node("y RSHIFT 2 -> g");
     circuit.add_node("NOT x -> h");
     circuit.add_node("NOT y -> i");
+    circuit.add_node("1 AND x -> j");
     
     REQUIRE ( circuit.get_value("d") == 72);
     REQUIRE ( circuit.get_value("e") == 507);
@@ -70,4 +71,5 @@ TEST_CASE("circuit can be built with strings","[circuit evaluation]") {
     REQUIRE ( circuit.get_value("g") == 114);
     REQUIRE ( circuit.get_value("h") == 65412);
     REQUIRE ( circuit.get_value("i") == 65079);
+    REQUIRE ( circuit.get_value("j") == 1);
 }

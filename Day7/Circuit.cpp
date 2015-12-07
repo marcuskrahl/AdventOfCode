@@ -2,7 +2,7 @@
 
 #include <regex>
 
-std::regex command_regex("([a-z]*) ?([A-Z]+) (.*) -> ([a-z]+)");
+std::regex command_regex("(\\d*)([a-z]*) ?([A-Z]+) (.*) -> ([a-z]+)");
 std::regex assign_regex("(\\d+) -> ([a-z]+)");
 
 void Circuit::add_node(Node node) {
@@ -20,16 +20,23 @@ void Circuit::add_node(const std::string& input) {
     if ( ! std::regex_match(input,match,command_regex)) {
         throw "invalid input";
     }
-    if (match[2] == "AND") {
-        add_node(Node(match[4],std::make_shared<AndCommand>(),match[1],match[3]));
-    } else if (match[2] == "OR") {
-        add_node(Node(match[4],std::make_shared<OrCommand>(),match[1],match[3]));
-    } else if (match[2] == "LSHIFT") {
-        add_node(Node(match[4],std::make_shared<LShiftCommand>(std::stoi(match[3])),match[1],""));
-    } else if (match[2] == "RSHIFT") {
-        add_node(Node(match[4],std::make_shared<RShiftCommand>(std::stoi(match[3])),match[1],""));
-    } else if (match[2] == "NOT") {
-        add_node(Node(match[4],std::make_shared<NotCommand>(),match[3],""));
+    std::string first_identifier;
+    if (match[1] == "") {
+        first_identifier = match[2];
+    } else {
+        first_identifier = "1";
+        add_node(Node("1",std::make_shared<ValueCommand>(std::stoi(match[1])),"",""));
+    }
+    if (match[3] == "AND") {
+        add_node(Node(match[5],std::make_shared<AndCommand>(),first_identifier,match[4]));
+    } else if (match[3] == "OR") {
+        add_node(Node(match[5],std::make_shared<OrCommand>(),first_identifier,match[4]));
+    } else if (match[3] == "LSHIFT") {
+        add_node(Node(match[5],std::make_shared<LShiftCommand>(std::stoi(match[4])),first_identifier,""));
+    } else if (match[3] == "RSHIFT") {
+        add_node(Node(match[5],std::make_shared<RShiftCommand>(std::stoi(match[4])),first_identifier,""));
+    } else if (match[3] == "NOT") {
+        add_node(Node(match[5],std::make_shared<NotCommand>(),match[4],""));
     }
      
 }
