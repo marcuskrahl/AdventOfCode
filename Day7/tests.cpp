@@ -29,6 +29,10 @@ TEST_CASE("circuit commands work as expected","[circuit evaluation]") {
 
     REQUIRE ( valueCommand.evaluate(0,0) == 8);
 
+    EqualsCommand equalsCommand;
+
+    REQUIRE ( equalsCommand.evaluate(42,0) == 42);
+
 }
 
 TEST_CASE("circuit is evaluated correctly","[circuit evaluation]") {
@@ -64,6 +68,7 @@ TEST_CASE("circuit can be built with strings","[circuit evaluation]") {
     circuit.add_node("NOT x -> h");
     circuit.add_node("NOT y -> i");
     circuit.add_node("1 AND x -> j");
+    circuit.add_node("x -> k");
     
     REQUIRE ( circuit.get_value("d") == 72);
     REQUIRE ( circuit.get_value("e") == 507);
@@ -72,4 +77,5 @@ TEST_CASE("circuit can be built with strings","[circuit evaluation]") {
     REQUIRE ( circuit.get_value("h") == 65412);
     REQUIRE ( circuit.get_value("i") == 65079);
     REQUIRE ( circuit.get_value("j") == 1);
+    REQUIRE ( circuit.get_value("k") == 123);
 }

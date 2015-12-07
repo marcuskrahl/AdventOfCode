@@ -3,7 +3,7 @@
 #include <regex>
 
 std::regex command_regex("(\\d*)([a-z]*) ?([A-Z]+) (.*) -> ([a-z]+)");
-std::regex assign_regex("(\\d+) -> ([a-z]+)");
+std::regex assign_regex("(\\d*)([a-z]*) -> ([a-z]+)");
 
 void Circuit::add_node(Node node) {
     nodes.insert(std::pair<std::string, Node> (node.id, node));
@@ -12,7 +12,11 @@ void Circuit::add_node(Node node) {
 void Circuit::add_node(const std::string& input) {
     std::smatch match_1;
     if ( std::regex_match(input,match_1, assign_regex)) {
-        add_node(Node(match_1[2],std::make_shared<ValueCommand>(std::stoi(match_1[1])),"",""));
+        if (match_1[1] == "") {
+            add_node(Node(match_1[3],std::make_shared<EqualsCommand>(),match_1[2],""));
+        } else {
+            add_node(Node(match_1[3],std::make_shared<ValueCommand>(std::stoi(match_1[1])),"",""));
+        } 
         return;
     }
 

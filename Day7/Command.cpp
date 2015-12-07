@@ -30,3 +30,7 @@ ValueCommand::ValueCommand(unsigned short value) : value(value) {
 unsigned short ValueCommand::evaluate(unsigned short value1, unsigned short value2) const {
     return value;
 }
+
+unsigned short EqualsCommand::evaluate(unsigned short value1, unsigned short value2) const {
+    return value1;
+}

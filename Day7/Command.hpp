@@ -39,6 +39,10 @@ class ValueCommand: public Command {
     private:
         unsigned short value;
 };
+class EqualsCommand: public Command {
+    public:
+        unsigned short evaluate(unsigned short input1, unsigned short input2) const;
+};
 
 
 #endif
