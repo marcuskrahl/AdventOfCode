@@ -20,6 +20,7 @@ class Node {
 class Circuit {
     public:
         void add_node(Node node);
+        void add_node(const std::string& input);
         unsigned short get_value(const std::string& node_id);
     private:
         std::map<std::string,Node> nodes;

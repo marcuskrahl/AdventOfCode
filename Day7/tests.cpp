@@ -50,3 +50,24 @@ TEST_CASE("circuit is evaluated correctly","[circuit evaluation]") {
     REQUIRE ( circuit.get_value("h") == 65412);
     REQUIRE ( circuit.get_value("i") == 65079);
 }
+
+
+TEST_CASE("circuit can be built with strings","[circuit evaluation]") {
+    Circuit circuit;
+
+    circuit.add_node("123 -> x");
+    circuit.add_node("456 -> y");
+    circuit.add_node("x AND y -> d");
+    circuit.add_node("x OR y -> e");
+    circuit.add_node("x LSHIFT 2 -> f");
+    circuit.add_node("y RSHIFT 2 -> g");
+    circuit.add_node("NOT x -> h");
+    circuit.add_node("NOT y -> i");
+    
+    REQUIRE ( circuit.get_value("d") == 72);
+    REQUIRE ( circuit.get_value("e") == 507);
+    REQUIRE ( circuit.get_value("f") == 492);
+    REQUIRE ( circuit.get_value("g") == 114);
+    REQUIRE ( circuit.get_value("h") == 65412);
+    REQUIRE ( circuit.get_value("i") == 65079);
+}
