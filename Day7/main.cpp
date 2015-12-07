@@ -1,7 +1,16 @@
 #include <iostream>
 #include <string>
 
+#include "Circuit.hpp"
+
 void run_part_one() {
+    Circuit circuit;
+    std::string command;
+    while (std::getline(std::cin,command)) {
+        std::cout << "parsed line " << command << std::endl;
+        circuit.add_node(command);
+    }
+    std::cout << circuit.get_value("a") << std::endl;
 }
 void run_part_two() {
 }
