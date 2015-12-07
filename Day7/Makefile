@@ -1,5 +1,5 @@
 DAY = day7
-SOURCE_FILES = Command.cpp
+SOURCE_FILES = Command.cpp Circuit.cpp
 LIBRARIES = 
 
 all: main.cpp

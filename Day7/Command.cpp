@@ -23,3 +23,10 @@ unsigned short OrCommand::evaluate(unsigned short value1, unsigned short value2)
 unsigned short NotCommand::evaluate(unsigned short value1, unsigned short value2) const {
     return ~value1;
 }
+
+ValueCommand::ValueCommand(unsigned short value) : value(value) {
+}
+
+unsigned short ValueCommand::evaluate(unsigned short value1, unsigned short value2) const {
+    return value;
+}
