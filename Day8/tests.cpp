@@ -32,3 +32,8 @@ TEST_CASE("memory length reduces escaped hex char to one character","[memory len
     REQUIRE(memory_length("\"ab\\x23c\"") == 4);
     REQUIRE(memory_length("\"\\x23\\x45\"") == 2);
 }
+
+TEST_CASE("encoded length escapes quotes","[encoded length]") {
+    REQUIRE(encoded_length("\"\"") == 6);
+    REQUIRE(encoded_length("\"abc\"") == 9);
+}

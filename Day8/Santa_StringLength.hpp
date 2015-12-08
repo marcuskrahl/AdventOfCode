@@ -5,5 +5,6 @@
 
 size_t string_length(const std::string& input);
 size_t memory_length(const std::string& input);
+size_t encoded_length(const std::string& input);
 
 #endif
