@@ -18,6 +18,12 @@ bool is_escaped_char(const char& char_to_escape, std::string::const_iterator& po
     return true;
 }
 
+void save_increase_iterator(std::string::const_iterator& it, const std::string::const_iterator& end) {
+    if (it != end) {
+        it++;
+    }
+}
+
 size_t memory_length(const std::string& input) {
     size_t length = 0;
     size_t surrounding_quotes = 2;
@@ -25,6 +31,11 @@ size_t memory_length(const std::string& input) {
        if (is_escaped_char('\\',it,input.end()) || is_escaped_char('\"',it,input.end())) {
            length += 1;
            it++;
+       } else if (is_escaped_char('x',it,input.end())) {
+           length += 1;
+           it++;
+           save_increase_iterator(it,input.end());
+           save_increase_iterator(it,input.end());
        } else {
             length += 1;
        }
