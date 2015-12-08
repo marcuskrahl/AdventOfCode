@@ -1,5 +1,5 @@
 DAY = day8
-SOURCE_FILES = 
+SOURCE_FILES = Santa_StringLength.cpp
 LIBRARIES = 
 
 all: main.cpp
