@@ -47,7 +47,7 @@ size_t encoded_length(const std::string& input) {
     size_t length = 0;
     size_t surrounding_quotes = 2;
     for (auto it = input.begin(); it != input.end(); it++) {
-        if (*it == '"') {
+        if ((*it == '"') || (*it == '\\')) {
             length+=2;
         } else {
             length++;

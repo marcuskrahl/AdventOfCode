@@ -37,3 +37,7 @@ TEST_CASE("encoded length escapes quotes","[encoded length]") {
     REQUIRE(encoded_length("\"\"") == 6);
     REQUIRE(encoded_length("\"abc\"") == 9);
 }
+
+TEST_CASE("encoded length escapes slashes","[encoded length]") {
+    REQUIRE(encoded_length("\"\\\\\"") == 10);
+}
