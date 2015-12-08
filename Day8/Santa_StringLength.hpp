@@ -4,5 +4,6 @@
 #include <string>
 
 size_t string_length(const std::string& input);
+size_t memory_length(const std::string& input);
 
 #endif

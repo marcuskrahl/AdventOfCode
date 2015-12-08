@@ -10,3 +10,7 @@ TEST_CASE("string length is correctly calculated","[string length]") {
     REQUIRE(string_length("\"\\\"\\\\\\x32\"") == 10);
 }
 
+TEST_CASE("memory length ignores start and end quote","[memory length]") {
+    REQUIRE(memory_length("\"\"") == 0);
+    REQUIRE(memory_length("\"abc\"") == 3);
+}
