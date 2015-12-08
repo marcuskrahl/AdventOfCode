@@ -41,3 +41,7 @@ TEST_CASE("encoded length escapes quotes","[encoded length]") {
 TEST_CASE("encoded length escapes slashes","[encoded length]") {
     REQUIRE(encoded_length("\"\\\\\"") == 10);
 }
+
+TEST_CASE("encoded length escapes hex chars correctly","[encoded length]") {
+    REQUIRE(encoded_length("\"\\x23\\x45\"") == 16);
+}
