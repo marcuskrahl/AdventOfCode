@@ -12,6 +12,12 @@ void run_part_one() {
     std::cout << total_difference << std::endl;
 }
 void run_part_two() {
+    std::string line;
+    size_t total_difference = 0;
+    while(std::getline(std::cin,line)) {
+        total_difference += encoded_length(line) - string_length(line);
+    }
+    std::cout << total_difference << std::endl;
 }
 
 
