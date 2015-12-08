@@ -20,3 +20,9 @@ TEST_CASE("memory length reduces double slash to one character","[memory length]
     REQUIRE(memory_length("\"ab\\\\c\"") == 4);
     REQUIRE(memory_length("\"\\\\\\\\\"") == 2);
 }
+
+TEST_CASE("memory length reduces escaped quote to one character","[memory length]") {
+    REQUIRE(memory_length("\"\\\"\"") == 1);
+    REQUIRE(memory_length("\"ab\\\"c\"") == 4);
+    REQUIRE(memory_length("\"\\\"\\\"\"") == 2);
+}

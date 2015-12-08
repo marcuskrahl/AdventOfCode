@@ -11,9 +11,13 @@ size_t memory_length(const std::string& input) {
        if ((*it == '\\') && ((it+1) != input.end()) && (*(it+1) == '\\')) {
            length += 1;
            it++;
+       } else if ((*it == '\\') && ((it+1) != input.end()) && (*(it+1) == '\"')) {
+          length += 1;
+          it++;
        } else {
             length += 1;
        }
     }
     return length-surrounding_quotes;
 }
+
