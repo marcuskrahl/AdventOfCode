@@ -14,3 +14,9 @@ TEST_CASE("memory length ignores start and end quote","[memory length]") {
     REQUIRE(memory_length("\"\"") == 0);
     REQUIRE(memory_length("\"abc\"") == 3);
 }
+
+TEST_CASE("memory length reduces double slash to one character","[memory length]") {
+    REQUIRE(memory_length("\"\\\\\"") == 1);
+    REQUIRE(memory_length("\"ab\\\\c\"") == 4);
+    REQUIRE(memory_length("\"\\\\\\\\\"") == 2);
+}
