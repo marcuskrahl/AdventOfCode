@@ -1,7 +1,15 @@
 #include <iostream>
 #include <string>
 
+#include "Santa_StringLength.hpp"
+
 void run_part_one() {
+    std::string line;
+    size_t total_difference = 0;
+    while(std::getline(std::cin,line)) {
+        total_difference += string_length(line) - memory_length(line);
+    }
+    std::cout << total_difference << std::endl;
 }
 void run_part_two() {
 }
