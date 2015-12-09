@@ -12,6 +12,6 @@ TEST_CASE("shortest route is correctly calculated for simple route","[route calc
     routeCalculation.add_connection("B to D = 2");
     routeCalculation.add_connection("C to D = 2");
 
-    REQUIRE (routeCalculation.get_shortest_route() == 6);
+    REQUIRE (routeCalculation.get_shortest_route() == 4);
 
 }
