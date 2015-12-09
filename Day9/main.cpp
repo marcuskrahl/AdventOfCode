@@ -1,7 +1,15 @@
 #include <iostream>
 #include <string>
 
+#include "RouteCalculation.hpp"
+
 void run_part_one() {
+    std::string line;
+    RouteCalculation route_calculation;
+    while (std::getline(std::cin,line)) {
+        route_calculation.add_connection(line);
+    }
+    std::cout << route_calculation.get_shortest_route() << std::endl;
 }
 void run_part_two() {
 }
