@@ -55,6 +55,7 @@ std::vector<std::string> RouteCalculation::get_route_points() const {
 }
 unsigned int RouteCalculation::get_shortest_route() const {
     std::vector<std::string> route_points = get_route_points();
+    std::sort(route_points.begin(), route_points.end());
     //std::vector<std::string> best_route;
     unsigned int best_route_cost = 999999;
     do {
