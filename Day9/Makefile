@@ -1,5 +1,5 @@
 DAY = day9
-SOURCE_FILES = 
+SOURCE_FILES = RouteCalculation.cpp
 LIBRARIES = 
 
 all: main.cpp
