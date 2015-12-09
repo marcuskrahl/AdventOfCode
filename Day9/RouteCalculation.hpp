@@ -17,6 +17,7 @@ class RouteCalculation {
     public:
         void add_connection(const std::string& input);
         unsigned int get_shortest_route() const;
+        unsigned int get_longest_route() const;
     private:
         std::vector<Route> routes;
         unsigned int calculate_cost_of_route_part(const std::string& first_route_point, const std::string& second_route_point) const;

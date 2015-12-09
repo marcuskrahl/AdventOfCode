@@ -5,6 +5,8 @@
 
 std::regex input_regex("(\\w+) to (\\w+) = (\\d+)");
 
+#define INVALID_ROUTE 999999
+
 void RouteCalculation::add_connection(const std::string& input) {
     std::smatch match;
     if (!std::regex_match(input,match,input_regex)) {
@@ -21,7 +23,7 @@ unsigned int RouteCalculation::calculate_cost_of_route_part(const std::string& f
             return route.cost;
         }
     }
-    return 999999;
+    return INVALID_ROUTE;
 }
 
 unsigned int RouteCalculation::calculate_cost_of_route(const std::vector<std::string> route_points) const {
@@ -61,6 +63,25 @@ unsigned int RouteCalculation::get_shortest_route() const {
     do {
         unsigned int cost = calculate_cost_of_route(route_points);
         if (cost < best_route_cost) {
+            best_route_cost = cost;
+            //best_route = route_points;
+        }
+    } while (std::next_permutation(route_points.begin(),route_points.end()));
+
+    return best_route_cost;
+}
+
+unsigned int RouteCalculation::get_longest_route() const {
+    std::vector<std::string> route_points = get_route_points();
+    std::sort(route_points.begin(), route_points.end());
+    //std::vector<std::string> best_route;
+    unsigned int best_route_cost = 0;
+    do {
+        unsigned int cost = calculate_cost_of_route(route_points);
+        if (cost >= INVALID_ROUTE) {
+            cost = 0;
+        }
+        if (cost > best_route_cost) {
             best_route_cost = cost;
             //best_route = route_points;
         }
