@@ -1,5 +1,6 @@
 #include "RouteCalculation.hpp"
 
+#include <algorithm>
 #include <regex>
 
 std::regex input_regex("(\\w+) to (\\w+) = (\\d+)");
@@ -39,8 +40,32 @@ unsigned int RouteCalculation::calculate_cost_of_route(const std::vector<std::st
    return route_length;
 }
 
+std::vector<std::string> RouteCalculation::get_route_points() const {
+    std::vector<std::string> output;
+    for (auto route: routes) {
+        if (std::find(output.begin(),output.end(),route.from) == output.end() ) {
+            output.push_back(route.from);
+        }
+        if (std::find(output.begin(),output.end(),route.to) == output.end() ) {
+            output.push_back(route.to);
+        }
+    }
+    return output;
+
+}
 unsigned int RouteCalculation::get_shortest_route() const {
-    return calculate_cost_of_route(std::vector<std::string> {"A","C","B","D"});
+    std::vector<std::string> route_points = get_route_points();
+    //std::vector<std::string> best_route;
+    unsigned int best_route_cost = 999999;
+    do {
+        unsigned int cost = calculate_cost_of_route(route_points);
+        if (cost < best_route_cost) {
+            best_route_cost = cost;
+            //best_route = route_points;
+        }
+    } while (std::next_permutation(route_points.begin(),route_points.end()));
+
+    return best_route_cost;
 }
 
 Route::Route(const std::string& from, const std::string& to, unsigned int cost) : from(from), to(to), cost(cost) {

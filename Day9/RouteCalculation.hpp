@@ -21,6 +21,7 @@ class RouteCalculation {
         std::vector<Route> routes;
         unsigned int calculate_cost_of_route_part(const std::string& first_route_point, const std::string& second_route_point) const;
         unsigned int calculate_cost_of_route(const std::vector<std::string> route_points) const; 
+        std::vector<std::string> get_route_points() const; 
 };
 
 #endif
