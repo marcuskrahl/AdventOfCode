@@ -1,5 +1,5 @@
 DAY = day10
-SOURCE_FILES = 
+SOURCE_FILES = LookAndSay.cpp
 LIBRARIES = 
 
 all: main.cpp
