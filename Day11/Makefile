@@ -1,5 +1,5 @@
 DAY = day11
-SOURCE_FILES = 
+SOURCE_FILES = PasswordGeneration.cpp
 LIBRARIES = 
 
 all: main.cpp
