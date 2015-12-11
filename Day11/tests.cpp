@@ -16,3 +16,11 @@ TEST_CASE("password is valid if it contains a straight of letters","[password ge
     REQUIRE(is_valid_password("abccff") == true);
     REQUIRE(is_valid_password("abddff") == false);
 }
+
+TEST_CASE("password is valid if it does not contain i,o or l") {
+    REQUIRE(is_valid_password("abccff") == true);
+    REQUIRE(is_valid_password("abccffi") == false);
+    REQUIRE(is_valid_password("abccffo") == false);
+    REQUIRE(is_valid_password("abccffl") == false);
+    REQUIRE(is_valid_password("abccffp") == true);
+}

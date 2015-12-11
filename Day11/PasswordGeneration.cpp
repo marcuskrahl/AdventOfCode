@@ -38,6 +38,15 @@ bool has_straight(const std::string& password) {
     return false;
 }
 
+bool does_not_contain_i_o_l(const std::string& password) {
+    for(auto c: password) {
+        if ((c == 'i') || (c == 'o') || (c == 'l')) {
+            return false;
+        }
+    }
+    return true;
+}
+
 bool is_valid_password(const std::string& password) {
-    return has_straight(password);
+    return has_straight(password) && does_not_contain_i_o_l(password);
 }
