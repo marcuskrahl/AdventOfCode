@@ -47,6 +47,36 @@ bool does_not_contain_i_o_l(const std::string& password) {
     return true;
 }
 
+std::string::const_iterator find_pair(std::string::const_iterator iter, const std::string::const_iterator end) {
+    if (iter == end) {
+        return end;
+    }
+    auto first_char = iter;
+    auto second_char = iter+1;
+    while (second_char != end) {
+        if (*first_char == *second_char) {
+            return first_char;
+        }
+        first_char++; second_char++;
+    }
+    return end;
+}
+
+bool has_two_different_pairs(const std::string& password) {
+    auto first_pair = find_pair(password.begin(), password.end());
+    if (first_pair == password.end()) {
+        return false;
+    }
+    auto second_pair = first_pair;
+    do {
+        second_pair = find_pair(second_pair+2, password.end());
+        if (second_pair == password.end()) {
+            return false;
+        }
+    } while (*second_pair == *first_pair);
+    return true;
+}
+
 bool is_valid_password(const std::string& password) {
-    return has_straight(password) && does_not_contain_i_o_l(password);
+    return has_straight(password) && does_not_contain_i_o_l(password) && has_two_different_pairs(password);
 }

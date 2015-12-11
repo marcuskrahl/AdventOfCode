@@ -24,3 +24,9 @@ TEST_CASE("password is valid if it does not contain i,o or l") {
     REQUIRE(is_valid_password("abccffl") == false);
     REQUIRE(is_valid_password("abccffp") == true);
 }
+
+TEST_CASE("password is valid if it contains two different pairs") {
+    REQUIRE(is_valid_password("abccff") == true);
+    REQUIRE(is_valid_password("abccf") == false);
+    REQUIRE(is_valid_password("abccfcc") == false);
+}
