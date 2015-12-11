@@ -19,3 +19,25 @@ std::string increment_password(const std::string& old_password) {
     } while (it != new_password.begin());
     return new_password;
 }
+
+bool has_straight(const std::string& password) {
+    if (password.length() < 3) {
+        return false;
+    }
+    auto first_char = password.begin();
+    auto second_char = password.begin()+1;
+    auto third_char = password.begin()+2;
+    while (third_char != password.end()) {
+        if (((*second_char) - (*first_char) == 1) && ((*third_char) - (*second_char) == 1)) {
+            return true;
+        }
+        first_char++;
+        second_char++;
+        third_char++;
+    }
+    return false;
+}
+
+bool is_valid_password(const std::string& password) {
+    return has_straight(password);
+}
