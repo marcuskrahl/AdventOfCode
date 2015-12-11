@@ -3,14 +3,18 @@
 
 #include "PasswordGeneration.hpp"
 
-void run_part_one() {
-    std::string password = "cqjxjnds";
+std::string get_next_password(const std::string& password) {
+    std::string tmp = password;
     do {
-        password = increment_password(password);
-    } while (!is_valid_password(password));
-    std::cout << password << std::endl;
+        tmp = increment_password(tmp);
+    } while (!is_valid_password(tmp));
+    return tmp;
+}
+void run_part_one() {
+    std::cout << get_next_password("cqjxjnds") << std::endl;
 }
 void run_part_two() {
+    std::cout << get_next_password(get_next_password("cqjxjnds")) << std::endl;
 }
 
 
