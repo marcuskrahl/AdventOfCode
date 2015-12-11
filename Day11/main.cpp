@@ -1,7 +1,14 @@
 #include <iostream>
 #include <string>
 
+#include "PasswordGeneration.hpp"
+
 void run_part_one() {
+    std::string password = "cqjxjnds";
+    do {
+        password = increment_password(password);
+    } while (!is_valid_password(password));
+    std::cout << password << std::endl;
 }
 void run_part_two() {
 }
