@@ -1,5 +1,5 @@
 DAY = day12
-SOURCE_FILES = 
+SOURCE_FILES = JSONAnalysis.cpp
 LIBRARIES = 
 
 all: main.cpp
