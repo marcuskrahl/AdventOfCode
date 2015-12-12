@@ -1,7 +1,12 @@
 #include <iostream>
 #include <string>
 
+#include "JSONAnalysis.hpp"
+
 void run_part_one() {
+    std::string json_string;
+    std::cin >> json_string;
+    std::cout << get_sum_of_numbers(json_string) << std::endl;
 }
 void run_part_two() {
 }
