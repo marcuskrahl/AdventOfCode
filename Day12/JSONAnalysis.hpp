@@ -4,5 +4,6 @@
 #include <string>
 
 int get_sum_of_numbers(const std::string& input);
+int get_sum_of_numbers_without_red(const std::string& input);
 
 #endif
