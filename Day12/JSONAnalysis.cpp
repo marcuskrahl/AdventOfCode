@@ -57,7 +57,7 @@ std::string remove_red_objects(std::string input) {
     while ((pos = input.find(":\"red\"")) != std::string::npos) {
         auto pos_open = get_position_of_open_brace(input, pos);
         auto pos_close = get_position_of_close_brace(input, pos);
-        input.erase(pos_open,pos_close);
+        input.erase(pos_open,pos_close+1);
     }
     return input;
 }
