@@ -1,7 +1,15 @@
 #include <iostream>
 #include <string>
 
+#include "Seating.hpp"
+
 void run_part_one() {
+    std::string line;
+    SeatingPlan plan;
+    while(std::getline(std::cin, line)) {
+        plan.add_rule(Seating::from_string(line));
+    }
+    std::cout << plan.get_maximum_happiness() << std::endl;
 }
 void run_part_two() {
 }
