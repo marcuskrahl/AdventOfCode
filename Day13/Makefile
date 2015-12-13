@@ -1,5 +1,5 @@
 DAY = day13
-SOURCE_FILES = 
+SOURCE_FILES = Seating.cpp
 LIBRARIES = 
 
 all: main.cpp
