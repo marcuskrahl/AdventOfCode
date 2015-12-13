@@ -18,3 +18,22 @@ TEST_CASE("negative input is correctly parsed","[seating]") {
     REQUIRE(seating.get_second_person() == "Carol");
     REQUIRE(seating.get_value() == -79);
 }
+
+TEST_CASE("maximum happiness is correctly retrieved","[seating]") {
+    SeatingPlan plan;
+
+    plan.add_rule(Seating("Alice","Bob",54));
+    plan.add_rule(Seating("Alice","Carol",-79));
+    plan.add_rule(Seating("Alice","David",-2));
+    plan.add_rule(Seating("Bob","Alice",83));
+    plan.add_rule(Seating("Bob","Carol",-7));
+    plan.add_rule(Seating("Bob","David",-63));
+    plan.add_rule(Seating("Carol","Alice",-62));
+    plan.add_rule(Seating("Carol","Bob",60));
+    plan.add_rule(Seating("Carol","David",55));
+    plan.add_rule(Seating("David","Alice",46));
+    plan.add_rule(Seating("David","Bob",-7));
+    plan.add_rule(Seating("David","Carol",41));
+
+    REQUIRE(plan.get_maximum_happiness() == 330);
+}

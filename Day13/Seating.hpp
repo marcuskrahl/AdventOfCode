@@ -2,6 +2,7 @@
 #define SEATING_HPP
 
 #include <string>
+#include <vector>
 
 class Seating {
     public:
@@ -15,5 +16,16 @@ class Seating {
         std::string first_person;
         std::string second_person;
         int value;
+};
+
+class SeatingPlan {
+    public:
+        void add_rule(Seating seating_rule);
+        int get_maximum_happiness() const;
+    private:
+        std::vector<Seating> seating_rules;
+        std::vector<std::string> get_persons() const; 
+        int get_happiness(const std::vector<std::string> persons) const;
+        int get_happiness_value_for_rule(const std::string& first_person, const std::string& second_person) const;
 };
 #endif
