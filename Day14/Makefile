@@ -1,5 +1,5 @@
 DAY = day14
-SOURCE_FILES = 
+SOURCE_FILES = Reindeer.cpp
 LIBRARIES = 
 
 all: main.cpp
