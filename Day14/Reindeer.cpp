@@ -1,5 +1,7 @@
 #include "Reindeer.hpp"
 
+#include <regex>
+
 Reindeer::Reindeer(unsigned int speed, unsigned int fly_time, unsigned int rest_time) 
     : speed(speed), fly_time(fly_time), rest_time(rest_time) {
 }
@@ -15,4 +17,14 @@ unsigned int Reindeer::get_distance_after_seconds(unsigned int seconds) {
         travelled_kilometers += speed*fly_time;
     }
     return travelled_kilometers;
+}
+
+std::regex reindeer_regex("\\w+ can fly (\\d+) km/s for (\\d+) seconds, but then must rest for (\\d+) seconds.");
+
+Reindeer Reindeer::from_string(const std::string& input) {
+    std::smatch match;
+    if (! std::regex_match(input,match,reindeer_regex)) {
+        throw "invalid reindeer format";
+    }
+    return Reindeer(std::stoul(match[1]),std::stoul(match[2]),std::stoul(match[3]));
 }
