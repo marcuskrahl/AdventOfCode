@@ -33,7 +33,7 @@ void run_part_two() {
             unsigned int travelled_distance = reindeers[i].get_distance_after_seconds(seconds);
             if (travelled_distance > max_travelled_distance) {
                 max_travelled_distance = travelled_distance;
-                max_indices.empty();
+                max_indices.clear();
                 max_indices.push_back(i);
             } else if (travelled_distance == max_travelled_distance) {
                 max_indices.push_back(i);
