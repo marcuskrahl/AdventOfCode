@@ -1,7 +1,18 @@
 #include <iostream>
 #include <string>
 
+#include "Reindeer.hpp"
+
 void run_part_one() {
+    unsigned int max_distance = 0;
+    std::string line;
+    while(std::getline(std::cin,line)) {
+        unsigned int travelled_distance = Reindeer::from_string(line).get_distance_after_seconds(2503);
+        if (travelled_distance > max_distance) {
+            max_distance = travelled_distance;
+        }
+    }
+    std::cout << max_distance << std::endl;
 }
 void run_part_two() {
 }
