@@ -1,5 +1,5 @@
 DAY = day15
-SOURCE_FILES = 
+SOURCE_FILES = Ingredient.cpp
 LIBRARIES = 
 
 all: main.cpp
