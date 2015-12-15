@@ -2,6 +2,7 @@
 #define INGREDIENT_HPP
 
 #include <string>
+#include <vector>
 
 class Ingredient {
     public:
@@ -18,5 +19,7 @@ class Ingredient {
         int flavor;
         int calories;
 };
+
+long get_optimal_composition(std::vector<Ingredient> ingredients);
 
 #endif

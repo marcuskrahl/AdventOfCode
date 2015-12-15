@@ -35,3 +35,66 @@ int Ingredient::get_texture() const {
 int Ingredient::get_calories() const {
     return calories;
 }
+
+long get_composition_value(const std::vector<Ingredient>& ingredients, const std::vector<int>& parts) {
+    long total_capacity = 0;
+    for (size_t i = 0; i<ingredients.size(); i++) {
+        total_capacity += ingredients[i].get_capacity() * parts[i];
+    }
+    long total_durability = 0;
+    for (size_t i = 0; i<ingredients.size(); i++) {
+        total_durability += ingredients[i].get_durability() * parts[i];
+    }
+    long total_flavor = 0;
+    for (size_t i = 0; i<ingredients.size(); i++) {
+        total_flavor += ingredients[i].get_flavor() * parts[i];
+    }
+    long total_texture = 0;
+    for (size_t i = 0; i<ingredients.size(); i++) {
+        total_texture += ingredients[i].get_texture() * parts[i];
+    }
+    if ((total_capacity <= 0) || (total_durability <= 0) || (total_flavor <= 0) || (total_texture <= 0)) {
+        return 0;
+    }
+    return total_capacity * total_durability * total_flavor * total_texture;
+}
+
+bool next_composition(std::vector<int>& composition) {
+    if (composition.front() == 100) {
+        return false;
+    }
+    auto iter = composition.begin()+1;
+    while(*iter == 0) {
+        iter++;
+    }
+    int taken_values_up_to_iter = 100;
+    auto iter2 = composition.end()-1;
+    while (iter2 != iter) {
+        taken_values_up_to_iter -= *iter2;
+        iter2--;
+    }
+    (*iter)--;
+    *(iter-1) = taken_values_up_to_iter - *iter;
+    iter--;
+    if (iter == composition.begin()) {
+        return true;
+    }
+    while (--iter != composition.begin()) {
+        *iter = 0;
+    }
+    return true;
+
+}
+
+long get_optimal_composition(std::vector<Ingredient> ingredients) {
+    long max_composition_value = 0;
+    std::vector<int> composition(ingredients.size(),0);
+    composition.back() = 100;
+    do {
+        long composition_value = get_composition_value(ingredients, composition);
+        if (composition_value > max_composition_value) {
+            max_composition_value = composition_value;
+        }
+    } while (next_composition(composition));
+    return max_composition_value;
+}
