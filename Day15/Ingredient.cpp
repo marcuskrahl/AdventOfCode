@@ -79,9 +79,10 @@ bool next_composition(std::vector<int>& composition) {
     if (iter == composition.begin()) {
         return true;
     }
-    while (--iter != composition.begin()) {
+    do {
+        iter--;
         *iter = 0;
-    }
+    } while (iter != composition.begin()); 
     return true;
 
 }
@@ -93,6 +94,7 @@ long get_optimal_composition(std::vector<Ingredient> ingredients) {
     do {
         long composition_value = get_composition_value(ingredients, composition);
         if (composition_value > max_composition_value) {
+
             max_composition_value = composition_value;
         }
     } while (next_composition(composition));
