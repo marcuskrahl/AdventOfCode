@@ -87,16 +87,33 @@ bool next_composition(std::vector<int>& composition) {
 
 }
 
-long get_optimal_composition(std::vector<Ingredient> ingredients) {
+unsigned int get_calorie_count(const std::vector<Ingredient>& ingredients, const std::vector<int>& composition) {
+    unsigned int calorie_count = 0;
+    for(size_t i = 0; i < ingredients.size(); i++) {
+        calorie_count += ingredients[i].get_calories() * composition[i];
+    }
+    return calorie_count;
+}
+
+long get_optimal_composition(std::vector<Ingredient> ingredients, unsigned int target_calorie_count, bool use_calorie_count) {
     long max_composition_value = 0;
     std::vector<int> composition(ingredients.size(),0);
     composition.back() = 100;
     do {
         long composition_value = get_composition_value(ingredients, composition);
-        if (composition_value > max_composition_value) {
+        if ((composition_value > max_composition_value) && (!use_calorie_count || target_calorie_count == get_calorie_count(ingredients, composition))) {
 
             max_composition_value = composition_value;
         }
     } while (next_composition(composition));
     return max_composition_value;
 }
+
+long get_optimal_composition(std::vector<Ingredient> ingredients) {
+    return get_optimal_composition(ingredients, -1, false);
+}
+
+long get_optimal_composition(std::vector<Ingredient> ingredients, unsigned int target_calorie_count) {
+    return get_optimal_composition(ingredients,target_calorie_count,true);
+}
+

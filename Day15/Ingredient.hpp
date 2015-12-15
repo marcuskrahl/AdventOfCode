@@ -21,5 +21,6 @@ class Ingredient {
 };
 
 long get_optimal_composition(std::vector<Ingredient> ingredients);
+long get_optimal_composition(std::vector<Ingredient> ingredients, unsigned int target_calorie_count);
 
 #endif
