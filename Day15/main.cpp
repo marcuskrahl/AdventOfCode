@@ -13,6 +13,12 @@ void run_part_one() {
     std::cout << get_optimal_composition(ingredients) << std::endl;
 }
 void run_part_two() {
+    std::string line;
+    std::vector<Ingredient> ingredients;
+    while (std::getline(std::cin, line)) {
+        ingredients.push_back(Ingredient(line));
+    }
+    std::cout << get_optimal_composition(ingredients,500) << std::endl;
 }
 
 
