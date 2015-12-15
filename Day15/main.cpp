@@ -1,7 +1,16 @@
 #include <iostream>
 #include <string>
+#include <vector>
+
+#include "Ingredient.hpp"
 
 void run_part_one() {
+    std::string line;
+    std::vector<Ingredient> ingredients;
+    while (std::getline(std::cin, line)) {
+        ingredients.push_back(Ingredient(line));
+    }
+    std::cout << get_optimal_composition(ingredients) << std::endl;
 }
 void run_part_two() {
 }
