@@ -36,3 +36,24 @@ bool Aunt::all_properties_of_first_aunt_in_second_aunt(const Aunt& aunt1, const 
     }
     return true;
 }
+
+bool Aunt::range_equals(const Aunt& reference_aunt) const {
+    for (auto it=values.begin(); it != values.end(); it++) {
+        int other_value = reference_aunt.get_value(it->first);
+        if (other_value == -1) {
+            continue;
+        }
+        if ((it->first == "cats") || (it->first == "trees")) {
+           if (it->second <= other_value) {
+                return false;
+           }
+        } else if ((it->first == "pomeranians") || (it-> first == "goldfish")) {
+            if(it->second >= other_value) {
+                return false;
+            }
+        } else if (it-> second != other_value) {
+            return false;
+        }
+    }
+    return true;
+}

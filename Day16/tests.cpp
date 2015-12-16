@@ -34,3 +34,24 @@ TEST_CASE("Aunts are equal if they share the same properties","[aunt]") {
     REQUIRE( (aunt1 == aunt3) == true);
     REQUIRE( (aunt2 == aunt3) == false);
 }
+
+TEST_CASE("Aunts are range equal if they share distinct properties","[aunt]") {
+    Aunt target_aunt("Sue 1: cats: 5, trees: 6, pomeranians: 4, goldfish: 3");
+    Aunt aunt2("Sue 2: cats: 5");
+    Aunt aunt3("Sue 3: cats: 7");
+    Aunt aunt4("Sue 4: trees: 6");
+    Aunt aunt5("Sue 5: trees: 7");
+    Aunt aunt6("Sue 6: pomeranians: 4");
+    Aunt aunt7("Sue 7: pomeranians: 3");
+    Aunt aunt8("Sue 8: goldfish: 3");
+    Aunt aunt9("Sue 9: goldfish: 2");
+
+    REQUIRE( aunt2.range_equals(target_aunt) == false);
+    REQUIRE( aunt3.range_equals(target_aunt) == true);
+    REQUIRE( aunt4.range_equals(target_aunt) == false);
+    REQUIRE( aunt5.range_equals(target_aunt) == true);
+    REQUIRE( aunt6.range_equals(target_aunt) == false);
+    REQUIRE( aunt7.range_equals(target_aunt) == true);
+    REQUIRE( aunt8.range_equals(target_aunt) == false);
+    REQUIRE( aunt9.range_equals(target_aunt) == true);
+}
