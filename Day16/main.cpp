@@ -16,6 +16,16 @@ void run_part_one() {
     std::cout << aunt_pos << std::endl;
 }
 void run_part_two() {
+    std::string line;
+    int aunt_pos = 1;
+    Aunt target_aunt("Sue 1: children: 3, cats: 7, samoyeds: 2, pomeranians: 3, akitas: 0, vizslas: 0, goldfish: 5, trees: 3, cars: 2, perfumes: 1");
+    while(std::getline(std::cin,line)) {
+        if (Aunt(line).range_equals(target_aunt)) {
+            break;
+        }
+        aunt_pos++;
+    }
+    std::cout << aunt_pos << std::endl;
 }
 
 
