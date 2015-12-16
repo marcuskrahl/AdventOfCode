@@ -24,3 +24,13 @@ TEST_CASE("Aunts are correctly parsed","[aunt]") {
     REQUIRE(aunt2.get_value("perfumes") == 5);
     REQUIRE(aunt2.get_value("akitas") == -1);
 }
+
+TEST_CASE("Aunts are equal if they share the same properties","[aunt]") {
+    Aunt aunt1("Sue 1: children: 3, cats: 7, samoyeds: 2");
+    Aunt aunt2("Sue 2: children: 3, cats: 7, akitas: 3");
+    Aunt aunt3("Sue 3: children: 3, cats: 7, samoyeds: 2, akitas: 4");
+
+    REQUIRE( (aunt1 == aunt2) == true);
+    REQUIRE( (aunt1 == aunt3) == true);
+    REQUIRE( (aunt2 == aunt3) == false);
+}

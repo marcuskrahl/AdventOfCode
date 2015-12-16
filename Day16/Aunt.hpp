@@ -10,7 +10,11 @@ class Aunt {
         int get_value(const std::string& key) const;
     private:
         std::map<std::string,int> values;
-
+        static bool all_properties_of_first_aunt_in_second_aunt(const Aunt& aunt1, const Aunt& aunt2);
+    
+    friend bool operator==(const Aunt& aunt1, const Aunt& aunt2);
 };
+
+bool operator==(const Aunt& aunt1, const Aunt& aunt2);
 
 #endif

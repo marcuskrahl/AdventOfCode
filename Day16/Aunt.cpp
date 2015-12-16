@@ -22,3 +22,17 @@ int Aunt::get_value(const std::string& key) const {
         return -1;
     }
 }
+
+bool operator==(const Aunt& aunt1, const Aunt& aunt2) {
+    return Aunt::all_properties_of_first_aunt_in_second_aunt(aunt1,aunt2) && Aunt::all_properties_of_first_aunt_in_second_aunt(aunt2,aunt1);
+}
+
+bool Aunt::all_properties_of_first_aunt_in_second_aunt(const Aunt& aunt1, const Aunt& aunt2) {
+    for(auto it=aunt1.values.begin(); it != aunt1.values.end(); it++) {
+        int other_value = aunt2.get_value(it->first);
+        if ((other_value != -1) && (other_value != it->second)) {
+            return false;
+        }
+    }
+    return true;
+}
