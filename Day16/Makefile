@@ -1,5 +1,5 @@
 DAY = day16
-SOURCE_FILES = 
+SOURCE_FILES = Aunt.cpp
 LIBRARIES = 
 
 all: main.cpp
