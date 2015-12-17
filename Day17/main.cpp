@@ -13,6 +13,18 @@ void run_part_one() {
     std::cout << get_number_of_combinations(containers, 150) << std::endl;
 }
 void run_part_two() {
+    std::vector<unsigned int> containers;
+    unsigned int container_value;
+    while (std::cin >> container_value) {
+        containers.push_back(container_value);
+    }
+    unsigned int combination_count = 0;
+    int target_depth = 1;
+    do {
+        combination_count = get_number_of_combinations_with_depth(containers,150,target_depth);
+        target_depth++;
+    } while (combination_count == 0);
+    std::cout << combination_count << std::endl;
 }
 
 
