@@ -1,7 +1,16 @@
 #include <iostream>
 #include <string>
 
+#include "Containers.hpp"
+#include <vector>
+
 void run_part_one() {
+    std::vector<unsigned int> containers;
+    unsigned int container_value;
+    while (std::cin >> container_value) {
+        containers.push_back(container_value);
+    }
+    std::cout << get_number_of_combinations(containers, 150) << std::endl;
 }
 void run_part_two() {
 }
