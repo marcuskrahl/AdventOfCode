@@ -33,6 +33,26 @@ void run_part_one() {
     std::cout << map.get_active_lights() << std::endl;
 }
 void run_part_two() {
+    std::string line;
+    LightMap map(100,100);
+    map.turn_on(0,0);
+    map.turn_on(99,0);
+    map.turn_on(99,99);
+    map.turn_on(0,99);
+
+    unsigned int current_line = 0;
+    while (std::getline(std::cin,line)) {
+        for (unsigned int i=0; i<100; i++) {
+            if (line[i] == '#') {
+                map.turn_on(i,current_line);
+            }
+        }
+        current_line++;
+    }
+    for (unsigned int i = 0; i<100; i++) {
+        map = map.corner_evolve();
+    }
+    std::cout << map.get_active_lights() << std::endl;
 }
 
 
