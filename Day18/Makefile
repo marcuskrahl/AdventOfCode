@@ -1,5 +1,5 @@
 DAY = day18
-LIBRARIES = 
+LIBRARIES = LightMap.cpp
 
 all: main.cpp
 	g++ -g -std=c++14 -Wall $(LIBRARIES) -o $(DAY) main.cpp $(SOURCE_FILES)
