@@ -43,6 +43,15 @@ LightMap LightMap::evolve() {
     return result;
 }
 
+LightMap LightMap::corner_evolve() {
+    auto result = evolve();
+    result.turn_on(0,0);
+    result.turn_on(max_x-1,0);
+    result.turn_on(max_x-1,max_y-1);
+    result.turn_on(0,max_y-1);
+    return result;
+}
+
 bool LightMap::should_be_turned_off(unsigned int x, unsigned int y) {
     unsigned int number_of_on_neighbors = get_number_of_on_neighbors(x,y);
     return number_of_on_neighbors > 3 || number_of_on_neighbors < 2;

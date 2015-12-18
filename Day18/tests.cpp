@@ -94,3 +94,14 @@ TEST_CASE("If there are 2 or 3 light neighbors, a switched on light remains on",
 
     REQUIRE(result4.is_on(0,0) == false);
 }
+
+TEST_CASE("Lights on edges remain on with corner_evolve","[light map]") {
+    LightMap map(3,3);
+
+    auto result = map.corner_evolve();
+
+    REQUIRE (result.is_on(0,0) == true);
+    REQUIRE (result.is_on(2,0) == true);
+    REQUIRE (result.is_on(2,2) == true);
+    REQUIRE (result.is_on(0,2) == true);
+}
