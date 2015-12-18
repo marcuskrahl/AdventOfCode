@@ -1,7 +1,36 @@
 #include <iostream>
 #include <string>
 
+#include "LightMap.hpp"
+
+void print_map(LightMap& light_map) {
+    for (int y=0;y<100;y++) {
+        for(int x=0;x<100;x++) {
+            if (light_map.is_on(x,y)) {
+                std::cout << '#';
+            } else {
+                std::cout << '.';
+            }
+        }
+        std::cout << std::endl;
+    }
+}
 void run_part_one() {
+    std::string line;
+    LightMap map(100,100);
+    unsigned int current_line = 0;
+    while (std::getline(std::cin,line)) {
+        for (unsigned int i=0; i<100; i++) {
+            if (line[i] == '#') {
+                map.turn_on(i,current_line);
+            }
+        }
+        current_line++;
+    }
+    for (unsigned int i = 0; i<100; i++) {
+        map = map.evolve();
+    }
+    std::cout << map.get_active_lights() << std::endl;
 }
 void run_part_two() {
 }
