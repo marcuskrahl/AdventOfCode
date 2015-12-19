@@ -33,3 +33,14 @@ TEST_CASE("molecule generator only counts distinct solutions","[molecule replace
 
     REQUIRE(generator.get_number_of_possible_results("HAHAH") == 3);
 }
+
+TEST_CASE("molecule generator finds shortest amount of steps to target molecule","[molecule replacement]") {
+    MoleculeGenerator generator;
+    generator.add_replacement(Replacement("e => H"));
+    generator.add_replacement(Replacement("e => O"));
+    generator.add_replacement(Replacement("H => HO"));
+    generator.add_replacement(Replacement("H => OH"));
+    generator.add_replacement(Replacement("O => HH"));
+
+    REQUIRE(generator.get_shortest_steps_to_target_molecule("HOHOHO") == 6);
+}

@@ -41,5 +41,24 @@ std::vector<std::string> MoleculeGenerator::get_results_for_replacement(const Re
     return results;
 }
 
-
-
+unsigned int MoleculeGenerator::get_shortest_steps_to_target_molecule(const std::string& input_string) const {
+    unsigned int steps = 0;
+    std::vector<std::string> results;
+    results.push_back("e");
+    while(true) {
+        steps++;
+        std::vector<std::string> new_results;
+        for (auto result: results) {
+            std::vector<std::string> partial_results = get_all_possible_results(result);
+            for (auto partial_result:partial_results) {
+                if (partial_result == input_string) {
+                    return steps;
+                }
+                if (partial_result.length() < input_string.length()) {
+                    new_results.push_back(partial_result);
+                }
+            }
+        }
+        results = new_results;
+    }
+}
