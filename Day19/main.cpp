@@ -18,6 +18,17 @@ void run_part_one() {
     std::cout << result << std::endl;
 }
 void run_part_two() {
+    std::string line;
+    MoleculeGenerator generator;
+    while (std::getline(std::cin,line)) {
+        if (line == "") {
+            break;
+        }
+        generator.add_replacement(Replacement(line));
+    }
+    std::getline(std::cin,line);
+    unsigned int result = generator.get_shortest_steps_to_target_molecule(line);
+    std::cout << result << std::endl;
 }
 
 

@@ -2,6 +2,7 @@
 #include "Replacement.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 void MoleculeGenerator::add_replacement(Replacement replacement) {
     replacements.push_back(replacement);
@@ -41,24 +42,25 @@ std::vector<std::string> MoleculeGenerator::get_results_for_replacement(const Re
     return results;
 }
 
+bool sort_replacements_descending(Replacement r1, Replacement r2) {
+    return r1.get_output().length() > r2.get_output().length();
+}
+
 unsigned int MoleculeGenerator::get_shortest_steps_to_target_molecule(const std::string& input_string) const {
     unsigned int steps = 0;
-    std::vector<std::string> results;
-    results.push_back("e");
-    while(true) {
+    auto sorted_replacements = replacements;
+    std::sort(sorted_replacements.begin(), sorted_replacements.end(),sort_replacements_descending);
+    std::string reduced_molecule =input_string;
+    while (reduced_molecule != "e") {
         steps++;
-        std::vector<std::string> new_results;
-        for (auto result: results) {
-            std::vector<std::string> partial_results = get_all_possible_results(result);
-            for (auto partial_result:partial_results) {
-                if (partial_result == input_string) {
-                    return steps;
-                }
-                if (partial_result.length() < input_string.length()) {
-                    new_results.push_back(partial_result);
-                }
+        for (auto replacement: sorted_replacements) {
+            size_t reduce_position;
+            if ((reduce_position = reduced_molecule.find(replacement.get_output())) != reduced_molecule.npos) {
+                reduced_molecule.replace(reduce_position,replacement.get_output().length(),replacement.get_input());
+                std::cout << "replaced molecule " << reduced_molecule << std::endl;
+                break;
             }
         }
-        results = new_results;
     }
+    return steps;
 }
