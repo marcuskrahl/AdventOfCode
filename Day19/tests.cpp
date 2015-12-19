@@ -21,3 +21,15 @@ TEST_CASE("molecule generator performs all possible replacements","[molecule rep
 
     REQUIRE(generator.get_number_of_possible_results("HAHAH") == 3);
 }
+
+TEST_CASE("molecule generator only counts distinct solutions","[molecule replacement]") {
+    
+    MoleculeGenerator generator;
+
+    Replacement replacement("H => OH");
+    Replacement replacement2("HA => OHA");
+    generator.add_replacement(replacement);
+    generator.add_replacement(replacement2);
+
+    REQUIRE(generator.get_number_of_possible_results("HAHAH") == 3);
+}

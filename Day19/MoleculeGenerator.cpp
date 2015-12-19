@@ -1,6 +1,8 @@
 #include "MoleculeGenerator.hpp"
 #include "Replacement.hpp"
 
+#include <algorithm>
+
 void MoleculeGenerator::add_replacement(Replacement replacement) {
     replacements.push_back(replacement);
 }
@@ -10,7 +12,11 @@ unsigned int MoleculeGenerator::get_number_of_possible_results(const std::string
 }
 
 std::vector<std::string> MoleculeGenerator::get_distinct_results(const std::string& input_string) const {
-    return get_all_possible_results(input_string);
+    auto all_results = get_all_possible_results(input_string);
+    std::sort(all_results.begin(), all_results.end());
+    auto new_end = std::unique(all_results.begin(), all_results.end());
+    all_results.resize(std::distance(all_results.begin(), new_end));
+    return all_results;
 }
 
 std::vector<std::string> MoleculeGenerator::get_all_possible_results(const std::string& input_string) const {
@@ -28,7 +34,7 @@ std::vector<std::string> MoleculeGenerator::get_results_for_replacement(const Re
     size_t pos = 0;
     while ((pos = input_string.find(replacement.get_input(),pos)) != input_string.npos) {
         std::string new_string = input_string;
-        new_string.replace(pos,pos+replacement_input_length, replacement.get_output());
+        new_string.replace(pos,replacement_input_length, replacement.get_output());
         results.push_back(new_string);
         pos++;
     }
