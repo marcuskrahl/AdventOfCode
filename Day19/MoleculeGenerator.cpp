@@ -2,7 +2,8 @@
 #include "Replacement.hpp"
 
 #include <algorithm>
-#include <iostream>
+#include <random>
+#include <chrono>
 
 void MoleculeGenerator::add_replacement(Replacement replacement) {
     replacements.push_back(replacement);
@@ -48,18 +49,23 @@ bool sort_replacements_descending(Replacement r1, Replacement r2) {
 
 unsigned int MoleculeGenerator::get_shortest_steps_to_target_molecule(const std::string& input_string) const {
     unsigned int steps = 0;
-    auto sorted_replacements = replacements;
-    std::sort(sorted_replacements.begin(), sorted_replacements.end(),sort_replacements_descending);
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    auto shuffled_replacements = replacements;
+    std::shuffle(shuffled_replacements.begin(),shuffled_replacements.end(), std::default_random_engine(seed));
     std::string reduced_molecule =input_string;
     while (reduced_molecule != "e") {
         steps++;
-        for (auto replacement: sorted_replacements) {
+        bool replaced = false;
+        for (auto replacement: shuffled_replacements) {
             size_t reduce_position;
             if ((reduce_position = reduced_molecule.find(replacement.get_output())) != reduced_molecule.npos) {
                 reduced_molecule.replace(reduce_position,replacement.get_output().length(),replacement.get_input());
-                std::cout << "replaced molecule " << reduced_molecule << std::endl;
+                replaced = true;
                 break;
             }
+        }
+        if (!replaced) {
+            return get_shortest_steps_to_target_molecule(input_string);
         }
     }
     return steps;
