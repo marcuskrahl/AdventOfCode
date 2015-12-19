@@ -1,5 +1,5 @@
 DAY = day19
-LIBRARIES = Replacement.cpp
+LIBRARIES = Replacement.cpp MoleculeGenerator.cpp
 
 all: main.cpp
 	g++ -g -std=c++14 -Wall $(LIBRARIES) -o $(DAY) main.cpp $(SOURCE_FILES)
