@@ -1,7 +1,16 @@
 #include <iostream>
 #include <string>
 
+#include "PresentDistribution.hpp"
+
 void run_part_one() {
+    unsigned long presents = 0;
+    unsigned long house = 1;
+    do {
+        house++;
+        presents = presents_in_house(house);
+    } while (presents < 34000000);
+    std::cout << house << std::endl;
 }
 void run_part_two() {
 }
