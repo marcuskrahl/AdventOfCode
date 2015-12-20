@@ -13,6 +13,13 @@ void run_part_one() {
     std::cout << house << std::endl;
 }
 void run_part_two() {
+    unsigned long presents = 0;
+    unsigned long house = 1;
+    do {
+        house++;
+        presents = presents_in_house2(house);
+    } while (presents < 34000000);
+    std::cout << house << std::endl;
 }
 
 
