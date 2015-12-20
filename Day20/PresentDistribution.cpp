@@ -13,3 +13,15 @@ unsigned long presents_in_house(unsigned long house_number) {
     return presents;
 }
 
+unsigned long presents_in_house2(unsigned long house_number) {
+    unsigned long presents = house_number*11; 
+    for (unsigned long i = 1; i <= (house_number/2); i++) {
+        if (50*i < house_number) {
+            continue;
+        }
+        if ((house_number % i) == 0) {
+            presents += i * 11;
+        }
+    }
+    return presents;
+}
