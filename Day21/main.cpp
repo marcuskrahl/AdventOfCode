@@ -8,6 +8,7 @@ void run_part_one() {
     std::cout << find_lowest_gold_to_win(100,8,2) << std::endl;
 }
 void run_part_two() {
+    std::cout << find_lowest_gold_to_lose(100,8,2) << std::endl;
 }
 
 
