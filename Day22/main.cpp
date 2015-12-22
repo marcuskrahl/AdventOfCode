@@ -7,6 +7,7 @@ void run_part_one() {
     std::cout << get_minimum_mana_to_win(58,9) << std::endl;
 }
 void run_part_two() {
+    std::cout << get_minimum_mana_to_win_with_hp_loss(58,9,1) << std::endl;
 }
 
 
