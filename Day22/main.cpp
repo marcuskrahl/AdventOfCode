@@ -1,7 +1,10 @@
 #include <iostream>
 #include <string>
  
+#include "Spells.hpp"
+
 void run_part_one() {
+    std::cout << get_minimum_mana_to_win(58,9) << std::endl;
 }
 void run_part_two() {
 }
