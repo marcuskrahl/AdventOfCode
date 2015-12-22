@@ -52,7 +52,8 @@ void tick_poison(Caster& caster, Boss& boss) {
     }
 }
 
-unsigned int get_minimum_mana_to_win(unsigned int boss_hp, unsigned int boss_damage) {
+
+unsigned int get_minimum_mana_to_win_with_hp_loss(unsigned int boss_hp, unsigned int boss_damage,unsigned int hp_loss) {
     Caster initial_caster;
     initial_caster.hp = 50;
     initial_caster.mana = 500;
@@ -85,6 +86,10 @@ unsigned int get_minimum_mana_to_win(unsigned int boss_hp, unsigned int boss_dam
             Boss boss = solution.second;
              
             if (caster.mana_spent >= minimum_mana) {
+                continue;
+            }
+            caster.hp -= hp_loss;
+            if (caster.hp <=0) {
                 continue;
             }
             tick_shield(caster);
@@ -150,4 +155,8 @@ unsigned int get_minimum_mana_to_win(unsigned int boss_hp, unsigned int boss_dam
         solutions = new_solutions;
     }
     return minimum_mana;
+}
+
+unsigned int get_minimum_mana_to_win(unsigned int boss_hp, unsigned int boss_damage) {
+    return get_minimum_mana_to_win_with_hp_loss(boss_hp,boss_damage,0);
 }
