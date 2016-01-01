@@ -4,8 +4,15 @@
 #define REGISTER_COUNT 2
 
 #include <array>
+#include <memory>
+#include <string>
 
-class HLF {
+class Instruction {
+    public:
+        virtual void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction) = 0;
+};
+
+class HLF : public Instruction {
     public:
         HLF(size_t register_to_modify);
         void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
@@ -13,7 +20,7 @@ class HLF {
         size_t register_to_modify;
 };
 
-class TPL {
+class TPL : public Instruction { 
     public:
         TPL(size_t register_to_modify);
         void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
@@ -21,7 +28,7 @@ class TPL {
         size_t register_to_modify;
 };
 
-class INC {
+class INC : public Instruction {
     public:
         INC(size_t register_to_modify);
         void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
@@ -29,7 +36,7 @@ class INC {
         size_t register_to_modify;
 };
 
-class JMP {
+class JMP : public Instruction {
     public:
         JMP(int jump_offset);
         void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
@@ -37,7 +44,7 @@ class JMP {
         int jump_offset;
 };
 
-class JIE {
+class JIE : public Instruction {
     public:
         JIE(size_t referenced_register, int jump_offset);
         void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
@@ -46,7 +53,7 @@ class JIE {
         int jump_offset;
 };
 
-class JIO {
+class JIO : public Instruction {
     public:
         JIO(size_t referenced_register, int jump_offset);
         void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
@@ -54,5 +61,7 @@ class JIO {
         size_t referenced_register;
         int jump_offset;
 };
+
+std::shared_ptr<Instruction> parse_instruction(const std::string& input);
 
 #endif

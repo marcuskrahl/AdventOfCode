@@ -92,3 +92,41 @@ TEST_CASE("JIO jumps to offset, but only if the specified register equals 1","[i
     REQUIRE( registers[1] == 3);
     REQUIRE( next_instruction == 1);
 }
+ 
+TEST_CASE("instructions are correctly parsed","[instructions]") {
+    std::shared_ptr<Instruction> instruction = parse_instruction ("hlf a");
+    std::array<int,REGISTER_COUNT> registers = { 8,3 };
+    unsigned int next_instruction = 0;
+    instruction->perform(registers,next_instruction);
+    REQUIRE(registers[0] == 4);
+
+    instruction = parse_instruction ("tpl a");
+    registers = { 8,3 };
+    next_instruction = 0;
+    instruction->perform(registers,next_instruction);
+    REQUIRE(registers[0] == 24);
+
+    instruction = parse_instruction ("inc b");
+    registers = { 8,3 };
+    next_instruction = 0;
+    instruction->perform(registers,next_instruction);
+    REQUIRE(registers[1] == 4);
+
+    instruction = parse_instruction ("jmp +4");
+    registers = { 8,3 };
+    next_instruction = 0;
+    instruction->perform(registers,next_instruction);
+    REQUIRE(next_instruction == 4);
+
+    instruction = parse_instruction ("jie a, +4");
+    registers = { 8,3 };
+    next_instruction = 0;
+    instruction->perform(registers,next_instruction);
+    REQUIRE(next_instruction == 4);
+
+    instruction = parse_instruction ("jio a, +4");
+    registers = { 1,3 };
+    next_instruction = 0;
+    instruction->perform(registers,next_instruction);
+    REQUIRE(next_instruction == 4);
+}

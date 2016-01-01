@@ -1,5 +1,7 @@
 #include "Instructions.hpp"
 
+#include "regex"
+
 HLF::HLF(size_t register_to_modify) : register_to_modify(register_to_modify) {
 
 }
@@ -57,4 +59,43 @@ void JIO::perform(std::array<int,REGISTER_COUNT>& registers, unsigned int& next_
     } else {
         next_instruction++;
     }
+}
+ 
+std::regex instruction_regex("(\\w+) (.+)");
+std::regex extended_jump_regex("(\\w), (.+)");
+
+size_t get_register_number(const std::string& register_string) {
+    return register_string[0] - 'a';
+}
+
+
+std::shared_ptr<Instruction> parse_instruction(const std::string& input) {
+    std::smatch match;
+    if(! std::regex_match(input,match,instruction_regex)) {
+        throw "invalid instruction";
+    }
+    if (match[1] == "hlf") {
+        return std::make_shared<HLF>(get_register_number(match[2]));
+    }
+    if (match[1] == "tpl") {
+        return std::make_shared<TPL>(get_register_number(match[2]));
+    }
+    if (match[1] == "inc") {
+        return std::make_shared<INC>(get_register_number(match[2]));
+    }
+    if (match[1] == "jmp") {
+        return std::make_shared<JMP>(std::stoi(match[2]));
+    }
+    std::smatch extended_jump_match;
+    std::string rest = match[2];
+    if (! std::regex_match(rest,extended_jump_match,extended_jump_regex)) {
+        throw "invalid extended jump";
+    }
+    if (match[1] == "jie") {
+        return std::make_shared<JIE>(get_register_number(extended_jump_match[1]),std::stoi(extended_jump_match[2]));
+    }
+    if (match[1] == "jio") {
+        return std::make_shared<JIO>(get_register_number(extended_jump_match[1]),std::stoi(extended_jump_match[2]));
+    }
+    throw "unknown instruction";
 }
