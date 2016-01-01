@@ -50,3 +50,24 @@ TEST_CASE("JMP jumps to offset without modification of registers","[instructions
     REQUIRE( registers[1] == 3);
     REQUIRE( next_instruction == 2);
 }
+
+TEST_CASE("JIE jumps to offset, but only if the specified register is even","[instructions]") {
+    JIE jie(0,3);
+    JIE jie2(1,3);
+    std::array<int,REGISTER_COUNT> registers = { 8,3 };
+    unsigned int next_instruction = 0;
+
+    jie.perform(registers,next_instruction);
+
+    REQUIRE( registers[0] == 8);
+    REQUIRE( registers[1] == 3);
+    REQUIRE( next_instruction == 3);
+
+    next_instruction = 0;
+
+    jie2.perform(registers,next_instruction);
+
+    REQUIRE( registers[0] == 8);
+    REQUIRE( registers[1] == 3);
+    REQUIRE( next_instruction == 1);
+}

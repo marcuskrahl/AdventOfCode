@@ -37,4 +37,13 @@ class JMP {
         int jump_offset;
 };
 
+class JIE {
+    public:
+        JIE(size_t referenced_register, int jump_offset);
+        void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
+    private:
+        size_t referenced_register;
+        int jump_offset;
+};
+
 #endif

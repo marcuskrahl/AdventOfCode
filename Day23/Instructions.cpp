@@ -34,3 +34,15 @@ JMP::JMP(int jump_offset) : jump_offset(jump_offset) {
 void JMP::perform(std::array<int,REGISTER_COUNT>& registers, unsigned int& next_instruction) {
     next_instruction += jump_offset; 
 }
+
+JIE::JIE(size_t referenced_register, int jump_offset) : referenced_register(referenced_register), jump_offset(jump_offset) {
+
+}
+
+void JIE::perform(std::array<int,REGISTER_COUNT>& registers, unsigned int& next_instruction) {
+    if ((registers[referenced_register] % 2) == 0) {
+        next_instruction += jump_offset; 
+    } else {
+        next_instruction++;
+    }
+}
