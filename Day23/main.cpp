@@ -1,7 +1,17 @@
 #include <iostream>
 #include <string>
+
+#include "Instructions.hpp"
  
 void run_part_one() {
+    std::string line;
+    InstructionRunner runner;
+    std::array<int,REGISTER_COUNT> registers = {0,0};
+    while(std::getline(std::cin,line)) {
+        runner.add_instruction(parse_instruction(line));
+    }
+    runner.run(registers);
+    std::cout<<registers[1]<<std::endl;
 }
 void run_part_two() {
 }
