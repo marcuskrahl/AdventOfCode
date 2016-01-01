@@ -130,3 +130,18 @@ TEST_CASE("instructions are correctly parsed","[instructions]") {
     instruction->perform(registers,next_instruction);
     REQUIRE(next_instruction == 4);
 }
+
+TEST_CASE("instructions are correctly run","[instructions]") {
+    InstructionRunner runner;
+
+    runner.add_instruction(parse_instruction("inc a"));
+    runner.add_instruction(parse_instruction("jio a, +2"));
+    runner.add_instruction(parse_instruction("tpl a"));
+    runner.add_instruction(parse_instruction("inc a"));
+
+    std::array<int,REGISTER_COUNT> registers = {0,0};
+
+    runner.run(registers);
+
+    REQUIRE (registers[0] == 2);
+}

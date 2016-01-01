@@ -6,6 +6,7 @@
 #include <array>
 #include <memory>
 #include <string>
+#include <vector>
 
 class Instruction {
     public:
@@ -62,6 +63,14 @@ class JIO : public Instruction {
         int jump_offset;
 };
 
+class InstructionRunner {
+    public:
+        void add_instruction(std::shared_ptr<Instruction> instruction);
+        void run(std::array<int,REGISTER_COUNT> &registers);
+    private:
+        std::vector<std::shared_ptr<Instruction>> instructions;
+
+};
 std::shared_ptr<Instruction> parse_instruction(const std::string& input);
 
 #endif

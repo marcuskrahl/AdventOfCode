@@ -99,3 +99,15 @@ std::shared_ptr<Instruction> parse_instruction(const std::string& input) {
     }
     throw "unknown instruction";
 }
+
+void InstructionRunner::add_instruction(std::shared_ptr<Instruction> instruction) {
+    instructions.push_back(instruction);
+}
+
+void InstructionRunner::run(std::array<int,REGISTER_COUNT>& registers) {
+    unsigned int current_instruction = 0;
+    unsigned int instruction_count = instructions.size();
+    while (current_instruction < instruction_count) {
+        instructions[current_instruction]->perform(registers,current_instruction);
+    }
+}
