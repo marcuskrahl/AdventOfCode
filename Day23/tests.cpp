@@ -71,3 +71,24 @@ TEST_CASE("JIE jumps to offset, but only if the specified register is even","[in
     REQUIRE( registers[1] == 3);
     REQUIRE( next_instruction == 1);
 }
+ 
+TEST_CASE("JIO jumps to offset, but only if the specified register equals 1","[instructions]") {
+    JIO jio(0,3);
+    JIO jio2(1,3);
+    std::array<int,REGISTER_COUNT> registers = { 1,3 };
+    unsigned int next_instruction = 0;
+
+    jio.perform(registers,next_instruction);
+
+    REQUIRE( registers[0] == 1);
+    REQUIRE( registers[1] == 3);
+    REQUIRE( next_instruction == 3);
+
+    next_instruction = 0;
+
+    jio2.perform(registers,next_instruction);
+
+    REQUIRE( registers[0] == 1);
+    REQUIRE( registers[1] == 3);
+    REQUIRE( next_instruction == 1);
+}

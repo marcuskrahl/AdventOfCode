@@ -46,4 +46,13 @@ class JIE {
         int jump_offset;
 };
 
+class JIO {
+    public:
+        JIO(size_t referenced_register, int jump_offset);
+        void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
+    private:
+        size_t referenced_register;
+        int jump_offset;
+};
+
 #endif
