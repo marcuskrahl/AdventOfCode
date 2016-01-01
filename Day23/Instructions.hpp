@@ -21,4 +21,12 @@ class TPL {
         size_t register_to_modify;
 };
 
+class INC {
+    public:
+        INC(size_t register_to_modify);
+        void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
+    private:
+        size_t register_to_modify;
+};
+
 #endif

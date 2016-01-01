@@ -26,3 +26,15 @@ TEST_CASE("TPL triples specified register","[instructions]") {
     REQUIRE( registers[1] == 3);
     REQUIRE( next_instruction == 1);
 }
+
+TEST_CASE("INC increases register by 1","[instructions]") {
+    INC inc(0);
+    std::array<int,REGISTER_COUNT> registers = { 8,3 };
+    unsigned int next_instruction = 0;
+
+    inc.perform(registers,next_instruction);
+
+    REQUIRE( registers[0] == 9);
+    REQUIRE( registers[1] == 3);
+    REQUIRE( next_instruction == 1);
+}
