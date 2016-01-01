@@ -29,4 +29,12 @@ class INC {
         size_t register_to_modify;
 };
 
+class JMP {
+    public:
+        JMP(int jump_offset);
+        void perform(std::array<int,REGISTER_COUNT> &registers, unsigned int &next_instruction);
+    private:
+        int jump_offset;
+};
+
 #endif

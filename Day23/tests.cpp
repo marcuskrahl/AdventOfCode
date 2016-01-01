@@ -38,3 +38,15 @@ TEST_CASE("INC increases register by 1","[instructions]") {
     REQUIRE( registers[1] == 3);
     REQUIRE( next_instruction == 1);
 }
+
+TEST_CASE("JMP jumps to offset without modification of registers","[instructions]") {
+    JMP jmp(-3);
+    std::array<int,REGISTER_COUNT> registers = { 8,3 };
+    unsigned int next_instruction = 5;
+
+    jmp.perform(registers,next_instruction);
+
+    REQUIRE( registers[0] == 8);
+    REQUIRE( registers[1] == 3);
+    REQUIRE( next_instruction == 2);
+}

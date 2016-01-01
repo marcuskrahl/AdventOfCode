@@ -26,3 +26,11 @@ void INC::perform(std::array<int,REGISTER_COUNT>& registers, unsigned int& next_
     registers[register_to_modify] = registers[register_to_modify] + 1;
     next_instruction++;
 }
+
+JMP::JMP(int jump_offset) : jump_offset(jump_offset) {
+
+}
+
+void JMP::perform(std::array<int,REGISTER_COUNT>& registers, unsigned int& next_instruction) {
+    next_instruction += jump_offset; 
+}
