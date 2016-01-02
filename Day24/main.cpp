@@ -9,9 +9,15 @@ void run_part_one() {
     while (std::getline(std::cin,line)) {
         packages.push_back(std::stol(line));
     }
-    std::cout << get_minimum_entaglement(packages) << std::endl;
+    std::cout << get_minimum_entaglement(packages,3) << std::endl;
 }
 void run_part_two() {
+    std::string line;
+    std::vector<unsigned int> packages;
+    while (std::getline(std::cin,line)) {
+        packages.push_back(std::stol(line));
+    }
+    std::cout << get_minimum_entaglement(packages,4) << std::endl;
 }
 
 
