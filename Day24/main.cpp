@@ -1,7 +1,15 @@
 #include <iostream>
 #include <string>
 
+#include "Packaging.hpp"
+
 void run_part_one() {
+    std::string line;
+    std::vector<unsigned int> packages;
+    while (std::getline(std::cin,line)) {
+        packages.push_back(std::stol(line));
+    }
+    std::cout << get_minimum_entaglement(packages) << std::endl;
 }
 void run_part_two() {
 }
