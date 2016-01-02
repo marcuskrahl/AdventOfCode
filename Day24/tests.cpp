@@ -6,5 +6,12 @@
 TEST_CASE("minimum quantum entaglement is returned","[packaging]") {
     std::vector<unsigned int> packages = {1,2,3,4,5,7,8,9,10,11};
 
-    REQUIRE( get_minimum_entaglement(packages) == 99);
+    REQUIRE( get_minimum_entaglement(packages,3) == 99);
+}
+
+TEST_CASE("minimum quantum entaglement is returned for different group size","[packaging]") {
+
+    std::vector<unsigned int> packages = {1,2,3,4,5,7,8,9,10,11};
+
+    REQUIRE( get_minimum_entaglement(packages,4) == 44);
 }

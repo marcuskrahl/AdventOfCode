@@ -4,10 +4,7 @@
 #include <array>
 #include <limits>
 
-const unsigned int package_groups = 3;
-
-
-unsigned int get_target_weight(const std::vector<unsigned int>& packages) {
+unsigned int get_target_weight(const std::vector<unsigned int>& packages,unsigned int package_groups) {
     unsigned int sum = 0;
     for(auto package:packages) {
         sum += package;
@@ -39,8 +36,8 @@ void iterate (const std::vector<unsigned int>& packages, std::vector<unsigned in
     
 }
 
-unsigned int get_minimum_entaglement(const std::vector<unsigned int>& packages) {
-    unsigned int target_weight = get_target_weight(packages);
+unsigned int get_minimum_entaglement(const std::vector<unsigned int>& packages, unsigned int group_size) {
+    unsigned int target_weight = get_target_weight(packages,group_size);
 
     package_values best_values;
     best_values.packages_in_front = std::numeric_limits<unsigned int>::max();
