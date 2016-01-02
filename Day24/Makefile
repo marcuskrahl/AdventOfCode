@@ -1,5 +1,5 @@
 DAY = day24
-LIBRARIES = 
+LIBRARIES = Packaging.cpp
 
 all: main.cpp
 	g++ -g -std=c++14 -O2 -Wall $(LIBRARIES) -o $(DAY) main.cpp $(SOURCE_FILES)
