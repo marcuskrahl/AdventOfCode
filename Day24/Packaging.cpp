@@ -36,7 +36,7 @@ void iterate (const std::vector<unsigned int>& packages, std::vector<unsigned in
     
 }
 
-unsigned int get_minimum_entaglement(const std::vector<unsigned int>& packages, unsigned int group_size) {
+unsigned long get_minimum_entaglement(const std::vector<unsigned int>& packages, unsigned int group_size) {
     unsigned int target_weight = get_target_weight(packages,group_size);
 
     package_values best_values;
