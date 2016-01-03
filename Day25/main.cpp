@@ -1,7 +1,10 @@
 #include <iostream>
 #include <string>
 
+#include "CodeGeneration.hpp"
+
 void run_part_one() {
+    std::cout << get_code(3010,3019) << std::endl;
 }
 void run_part_two() {
 }
