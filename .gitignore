@@ -33,3 +33,7 @@ input
 
 # Temporary vim files
 *.swp
+
+# .net build results
+**/obj
+**/bin
