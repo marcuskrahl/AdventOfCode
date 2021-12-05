@@ -12,7 +12,7 @@ type Board = BoardCell list list
 
 
 let parseRow (inputRow: string ) = 
-    printfn "parsing %s" inputRow
+    //printfn "parsing %s" inputRow
     inputRow |> fun r -> r.Split(" ", StringSplitOptions.RemoveEmptyEntries) |> List.ofSeq |> List.map Convert.ToInt32 |> List.map (fun n -> (n, false))
 
 let parseBoard inputRows = 
@@ -40,9 +40,9 @@ let part1 (input: string list) =
     let boards = input |> List.tail |> List.chunkBySize 6 |> List.map (fun x -> x |> List.tail |> parseBoard)
     let (board, guess)  = findSolution guesses boards
     let sum = unmarkedSum board
-    printfn "%d" guess
-    printfn "%d" sum
-    printfn "%A" board
+    //printfn "%d" guess
+    //printfn "%d" sum
+    //printfn "%A" board
     sum * guess
 
 let rec findLastBoard guesses boards = 
@@ -50,8 +50,8 @@ let rec findLastBoard guesses boards =
         | [board] -> board
         | _ ->
             let (winningBoard, _) = findSolution guesses boards
-            printfn "found winning board"
-            printfn "%A" winningBoard
+            //printfn "found winning board"
+            //printfn "%A" winningBoard
             let normalizedWinningBoard = winningBoard |> List.map (fun r -> r |> List.map (fun (n,b) -> (n, false)))
             findLastBoard guesses (boards |> List.except [normalizedWinningBoard])
 
@@ -61,7 +61,7 @@ let part2 (input: string list) =
     let lastBoard = findLastBoard guesses boards
     let (board, guess)  = findSolution guesses [lastBoard]
     let sum = unmarkedSum board
-    printfn "%d" guess
-    printfn "%d" sum
-    printfn "%A" board
+    //printfn "%d" guess
+    //printfn "%d" sum
+    //printfn "%A" board
     sum * guess
