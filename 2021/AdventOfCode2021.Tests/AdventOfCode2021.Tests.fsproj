@@ -19,10 +19,10 @@
     <Compile Include="Day8_Tests.fs" />
     <Compile Include="Day9_Tests.fs" />
     <Compile Include="Day10_Tests.fs" />
-    -->
     <Compile Include="Day11_Tests.fs" />
-    <!--
+    -->
     <Compile Include="Day12_Tests.fs" />
+    <!--
     <Compile Include="Day13_Tests.fs" />
     <Compile Include="Day14_Tests.fs" />
     <Compile Include="Day15_Tests.fs" />
