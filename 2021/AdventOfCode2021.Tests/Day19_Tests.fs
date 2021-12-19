@@ -147,9 +147,9 @@ let input = [
 [<Fact>]
 let ``Part 1 returns correct result`` () =
     let result = part1 input
-    Assert.Equal(42, result)
+    Assert.Equal(79, result)
 
 [<Fact>]
 let ``Part 2 returns correct result`` () =
     let result = part2 input
-    Assert.Equal(42, result)
+    Assert.Equal(3621, result)

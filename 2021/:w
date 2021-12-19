@@ -12,12 +12,6 @@ type Operation =
     | ShiftLeft
     | ShiftRight
 
-type ScannerTree = { 
-        Scanner: ScannerReading;
-        Offset: Operation * (int * int *int) * (int * int * int);
-        Children: ScannerTree list;
-    }
-
 let parseScannerLines (lines: string list) =
     let firstLine :: restLines = lines
     let number = Convert.ToInt32(firstLine.Replace("--- scanner ", "").Replace(" ---",""))
@@ -88,14 +82,10 @@ let normalize (x,y,z) operation (xm,ym,zm) =
         | ShiftRight -> (z,x,y)
     (xd * xm, yd * ym, zd * zm)
 
-let getOffset ((x11,y11,z11), (x12, y12,z12)) ((x21, y21, z21), (x22, y22, z22)) =
+let getOffset ((x11,y11,z11), (x12, y12,z12)) ((x21, y21, z21), (x22, y22, z22)) (
     if (x21 - x11 = x22 - x12) && (y21 - y11 = y22 - y12) && (z21 - z11 = z22 - z12)
     then ((x21 - x11),(y21 - y11),(z21 - z11))
     else ((x21 - x12),(y21 - y12),(z21 - z12))
-
-let normalizeOffset operation matrix (xo,yo,zo) (x,y,z) = 
-    let (xn,yn,zn) = normalize (x,y,z) operation matrix
-    ((xn - xo), (yn - yo), (zn - zo))
 
 let triangulateScanners s1 s2 = 
     printfn "Triangulating %d with %d" s1.Number s2.Number
@@ -109,95 +99,43 @@ let triangulateScanners s1 s2 =
         if List.isEmpty validCoordinates then None
         else
         let [validCoordinate; _] = validCoordinates
-        //printfn "%A" relativeCoordinates
-        //printfn "%A" validCoordinate
+        printfn "%A" relativeCoordinates
+        printfn "%A" validCoordinate
         let (validAbsolute,validRelative) = validCoordinate
         let operation = findOperation relativeCoordinates validRelative
         let n1 = normalize validRelative operation (1,1,1)
         let matrix = findMultiplication relativeCoordinates n1
         let normalized = normalize validRelative operation matrix
-        //printfn "%A" normalized 
+        printfn "%A" normalized 
         let (b21, b22) = validAbsolute
         let b21 = normalize b21 operation matrix
         let b22 = normalize b22 operation matrix
         let offset = getOffset (b11,b12) (b21, b22)
-        //printfn "%A" offset
-        
-        let normalizedCoordinates = s2.Readings |> List.map (fun (x,y,z) -> normalizeOffset operation matrix offset (x,y,z))
-        let sameCoordinates = normalizedCoordinates |> List.map (fun coords -> if List.contains coords s1.Readings then 1 else 0) |> List.sum
-        printfn "same coordinates: %d" sameCoordinates
-        if sameCoordinates >= 12 then Some(operation,matrix, offset) else None
+        printfn "%A" offset
+        Some (operation, matrix)
         )
 
 let getChildren sourceScanner scanners = 
-    let rec getChildrenRec sourceScanner visitedScanners = 
-        let childScanners = 
-            scanners 
-                |> List.where (fun s -> not (visitedScanners |> List.contains s.Number)) 
-                |> List.map (fun s -> ((triangulateScanners sourceScanner s) |> Option.map (fun r -> (s,r))))
-                |> List.where Option.isSome 
-                |> List.map Option.get
+    let childScanners = 
+        scanners 
+            |> List.where (fun s -> (s.Number > sourceScanner.Number)) 
+            |> List.map (fun s -> ((triangulateScanners sourceScanner s) |> Option.map (fun r -> (s,r))))
+            |> List.where Option.isSome 
+            |> List.map Option.get
 
-        let blockedScanners = childScanners |> List.map (fun (s,_) -> s.Number)
-        childScanners |> List.map (fun (childScanner, result) -> 
-                let childResult = getChildrenRec childScanner (visitedScanners @ blockedScanners)
-                { Scanner = childScanner;
-                  Offset = result;
-                  Children = childResult
-                  }
-            )
-    let result = getChildrenRec sourceScanner [sourceScanner.Number]
-    result
+    printfn "%A" childScanners 
+    ()
 
-let absoluteBeacons children = 
-    let rec absoluteBeaconsRec children operations = 
-        children |> List.map (fun child -> 
-                printfn "Scanner %d (Offset: %A)" child.Scanner.Number child.Offset
-                let newOperations = operations @ [child.Offset]
-                let points = child.Scanner.Readings |> List.map (fun r -> 
-                    newOperations |> List.rev |> List.fold (fun acc (op, mat, off) -> normalizeOffset op mat off acc) r
-                )
-                for (x,y,z) in points do
-                    printfn "%d %d %d" x y z
-                points @ absoluteBeaconsRec child.Children newOperations
-            ) |> List.concat |> List.distinct
-    absoluteBeaconsRec children []
+let dunno scanners = 
+    let s1 :: _ = scanners
+    getChildren s1 scanners
+    () 
 
-let absoluteScanners children = 
-    let rec absoluteScannersRec children operations = 
-        children |> List.map (fun child -> 
-                printfn "Scanner %d (Offset: %A)" child.Scanner.Number child.Offset
-                let newOperations = operations @ [child.Offset]
-                let offset = newOperations |> List.rev |> List.fold (fun acc (op, mat, off) -> normalizeOffset op mat off acc) (0,0,0)
-                printfn "abs offset: %A" offset
-                offset :: absoluteScannersRec child.Children newOperations
-            ) |> List.concat 
-    absoluteScannersRec children []
-
-
-let getBeaconCount scanners = 
-    let s1 :: _= scanners
-    let children = getChildren s1 scanners
-    let beaconPositions = (s1.Readings @ absoluteBeacons children) |> List.distinct
-    printfn "%A %d" beaconPositions (beaconPositions |> List.length)
-    beaconPositions |> List.length
-
-let manhattanDistance (x1,y1,z1) (x2,y2,z2) = 
-   (abs (x1 - x2)) + (abs (y1 - y2)) + (abs (z1 - z2))
-
-let getScannerDistance scanners = 
-    let s1 :: _= scanners
-    let children = getChildren s1 scanners
-    let absScanners = absoluteScanners children
-    printfn "%A" absScanners
-    List.allPairs absScanners absScanners 
-        |> List.map (fun (s1, s2) -> manhattanDistance s1 s2) 
-        |> List.max
 
 let part1 (input: string list) = 
     let readings = parseInput input
-    getBeaconCount readings
+    dunno readings
+    42
 
 let part2 (input: string list) = 
-    let readings = parseInput input
-    getScannerDistance readings
+    42
