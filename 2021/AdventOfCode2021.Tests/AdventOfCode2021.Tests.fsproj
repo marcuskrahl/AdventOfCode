@@ -30,10 +30,10 @@
     <Compile Include="Day19_Tests.fs" />
     <Compile Include="Day20_Tests.fs" />
     <Compile Include="Day21_Tests.fs" />
-    -->
     <Compile Include="Day22_Tests.fs" />
-    <!--
+    -->
     <Compile Include="Day23_Tests.fs" />
+    <!--
     <Compile Include="Day24_Tests.fs" />
     <Compile Include="Day25_Tests.fs" />
     -->
