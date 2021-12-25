@@ -5,6 +5,6 @@
 let main(args) = 
     let fileName = args.[0] + "_input"
     let fileContent = Util.readInput fileName
-    let result = fileContent |> List.ofSeq |> Day22.part1
+    let result = fileContent |> List.ofSeq |> Day25.part1
     printfn "%d" result
     0

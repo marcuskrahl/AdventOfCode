@@ -2,7 +2,7 @@ module Day23
 
 open System
 
-type Position = 
+(*type Position = 
     | Hallway of int32
     | Room of (char * int32)
     
@@ -62,8 +62,10 @@ let rec move pods cost =
     let childResult = movablePods |> List.map (tryMove) |> List.min 
     cost + childResult
 
+*)
 let part1 (input: string list) = 
-    move amphipods 0
+    //move amphipods 0
+    42
 
 let part2 (input: string list) = 
     42
