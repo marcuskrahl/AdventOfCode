@@ -8,10 +8,9 @@ import {
   Tree,
 } from '@nrwl/devkit';
 import * as path from 'path';
-import { AocPluginGeneratorSchema } from './schema';
-import { libraryGenerator } from '@nrwl/js';
+import { AocGeneratorGeneratorSchema } from './schema';
 
-interface NormalizedSchema extends AocPluginGeneratorSchema {
+interface NormalizedSchema extends AocGeneratorGeneratorSchema {
   projectName: string;
   projectRoot: string;
   projectDirectory: string;
@@ -20,7 +19,7 @@ interface NormalizedSchema extends AocPluginGeneratorSchema {
 
 function normalizeOptions(
   tree: Tree,
-  options: AocPluginGeneratorSchema
+  options: AocGeneratorGeneratorSchema
 ): NormalizedSchema {
   const name = names(options.name).fileName;
   const projectDirectory = options.directory
@@ -56,7 +55,10 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
   );
 }
 
-export default async function (tree: Tree, options: AocPluginGeneratorSchema) {
+export default async function (
+  tree: Tree,
+  options: AocGeneratorGeneratorSchema
+) {
   const normalizedOptions = normalizeOptions(tree, options);
   addProjectConfiguration(tree, normalizedOptions.projectName, {
     root: normalizedOptions.projectRoot,
@@ -66,9 +68,24 @@ export default async function (tree: Tree, options: AocPluginGeneratorSchema) {
       build: {
         executor: '@adventofcode2022/aoc-plugin:build',
       },
+      test: {
+        executor: '@nrwl/jest:jest',
+        outputs: ['{workspaceRoot}/coverage/{projectRoot}'],
+        options: {
+          jestConfig: `${normalizedOptions.projectRoot}/jest.config.ts`,
+          passWithNoTests: true,
+        },
+      },
+      'run-aoc': {
+        executor: '@adventofcode2022/aoc-plugin:run-aoc',
+        options: {
+          code: `${normalizedOptions.projectRoot}/src/lib/code.ts`,
+          input: `${normalizedOptions.projectRoot}/src/lib/input`,
+        },
+      },
     },
     tags: normalizedOptions.parsedTags,
   });
   addFiles(tree, normalizedOptions);
-  await libraryGenerator(tree, options)
+  await formatFiles(tree);
 }

@@ -7,6 +7,11 @@
       "factory": "./src/generators/aoc-plugin/generator",
       "schema": "./src/generators/aoc-plugin/schema.json",
       "description": "aoc-plugin generator"
+    },
+    "aoc-generator": {
+      "factory": "./src/generators/aoc-generator/generator",
+      "schema": "./src/generators/aoc-generator/schema.json",
+      "description": "aoc-generator generator"
     }
   }
 }
