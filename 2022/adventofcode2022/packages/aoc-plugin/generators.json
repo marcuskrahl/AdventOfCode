@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "aoc-plugin",
+  "version": "0.0.1",
+  "generators": {
+    "aoc-plugin": {
+      "factory": "./src/generators/aoc-plugin/generator",
+      "schema": "./src/generators/aoc-plugin/schema.json",
+      "description": "aoc-plugin generator"
+    }
+  }
+}

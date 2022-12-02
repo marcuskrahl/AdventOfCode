@@ -1,41 +1,33 @@
 {
-  "name": "day1",
+  "name": "util",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/day1/src",
+  "sourceRoot": "packages/util/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/day1",
-        "main": "packages/day1/src/index.ts",
-        "tsConfig": "packages/day1/tsconfig.lib.json",
-        "assets": ["packages/day1/*.md"]
+        "outputPath": "dist/packages/util",
+        "main": "packages/util/src/index.ts",
+        "tsConfig": "packages/util/tsconfig.lib.json",
+        "assets": ["packages/util/*.md"]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/day1/**/*.ts"]
+        "lintFilePatterns": ["packages/util/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/day1/jest.config.ts",
+        "jestConfig": "packages/util/jest.config.ts",
         "passWithNoTests": true
       }
-    },
-    "run-aoc": {
-      "executor": "@adventofcode2022/aoc-plugin:run-aoc",
-      "options": {
-        "code": "packages/day1/src/lib/day1.ts",
-        "input": "packages/day1/src/lib/input"
-      }
-
     }
   },
   "tags": []

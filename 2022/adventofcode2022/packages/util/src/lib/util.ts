@@ -1,0 +1,38 @@
+export function util(): string {
+  return 'util';
+}
+
+export function groupLines(lines: readonly string[]): string[][] {
+  return lines.reduce(
+    (acc: string[][], curr: string) => {
+      if (curr === '') {
+        return [...acc, []];
+      } else {
+        return [...acc.slice(0, -1), [...acc.at(-1)!, curr]];
+      }
+    },
+    [[]]
+  );
+}
+
+export function max(data: readonly number[]): number {
+  return data.reduce((acc, curr) => (curr > acc ? curr : acc), 0);
+}
+
+export function max3(data: readonly number[]): [number, number, number] {
+  return data.reduce(
+    ([a, b, c], curr) =>
+      curr > a
+        ? [curr, a, b]
+        : curr > b
+        ? [a, curr, b]
+        : curr > c
+        ? [a, b, curr]
+        : [a, b, c],
+    [0, 0, 0]
+  );
+}
+
+export function sum(data: readonly number[]): number {
+  return data.reduce((acc, curr) => acc + curr, 0);
+}
