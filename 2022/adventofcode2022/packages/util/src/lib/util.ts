@@ -36,3 +36,13 @@ export function max3(data: readonly number[]): [number, number, number] {
 export function sum(data: readonly number[]): number {
   return data.reduce((acc, curr) => acc + curr, 0);
 }
+
+export function group3(data: readonly string[]): string[][] {
+  return data.reduce((acc: string[][], curr) => {
+    const currentArray = acc.at(-1)!;
+    if (currentArray.length === 3) {
+      return [...acc, [curr]];
+    }
+    return [...acc.slice(0,-1), [...currentArray, curr]]
+  }, [[]]);
+}
