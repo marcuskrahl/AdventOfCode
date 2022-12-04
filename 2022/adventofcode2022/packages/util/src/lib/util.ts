@@ -38,11 +38,34 @@ export function sum(data: readonly number[]): number {
 }
 
 export function group3(data: readonly string[]): string[][] {
-  return data.reduce((acc: string[][], curr) => {
-    const currentArray = acc.at(-1)!;
-    if (currentArray.length === 3) {
-      return [...acc, [curr]];
-    }
-    return [...acc.slice(0,-1), [...currentArray, curr]]
-  }, [[]]);
+  return data.reduce(
+    (acc: string[][], curr) => {
+      const currentArray = acc.at(-1)!;
+      if (currentArray.length === 3) {
+        return [...acc, [curr]];
+      }
+      return [...acc.slice(0, -1), [...currentArray, curr]];
+    },
+    [[]]
+  );
+}
+
+export function isContainedInOther(
+  [a1, a2]: [number, number],
+  [b1, b2]: [number, number]
+): boolean {
+  return (a1 <= b1 && a2 >= b2) || (b1 <= a1 && b2 >= a2);
+}
+
+export function isOverlap(
+  [a1, a2]: [number, number],
+  [b1, b2]: [number, number]
+): boolean {
+  if (a2 < b1 && a1 < b1) {
+    return false;
+  }
+  if (b2 < a1 && b1 < a1) {
+    return false;
+  }
+  return true;
 }
