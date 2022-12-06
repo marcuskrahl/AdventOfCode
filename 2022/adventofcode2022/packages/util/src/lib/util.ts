@@ -1,3 +1,13 @@
+export function* bufferInput(input: string, bufferSize: number) {
+  for (let i = 0; i <= input.length - bufferSize; i++) {
+    yield [i, input.slice(i, i + bufferSize)] as const;
+  }
+}
+
+export function isUnique(segment: string): boolean {
+  return segment.split('').every((s, i) => segment.indexOf(s) === i);
+}
+
 export function util(): string {
   return 'util';
 }
