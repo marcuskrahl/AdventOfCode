@@ -29,6 +29,13 @@ export function max(data: readonly number[]): number {
   return data.reduce((acc, curr) => (curr > acc ? curr : acc), 0);
 }
 
+export function min(data: readonly number[]): number {
+  return data.reduce(
+    (acc, curr) => (curr < acc ? curr : acc),
+    Number.MAX_SAFE_INTEGER
+  );
+}
+
 export function max3(data: readonly number[]): [number, number, number] {
   return data.reduce(
     ([a, b, c], curr) =>
