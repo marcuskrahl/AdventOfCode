@@ -4,6 +4,12 @@ export function* bufferInput(input: string, bufferSize: number) {
   }
 }
 
+export function* windowInput<T>(input: readonly T[], windowSize: number) {
+  for (let i = 0; i <= input.length; i += windowSize) {
+    yield input.slice(i, i + windowSize);
+  }
+}
+
 export function isUnique(segment: string): boolean {
   return segment.split('').every((s, i) => segment.indexOf(s) === i);
 }

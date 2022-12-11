@@ -8,17 +8,29 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2021",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@adventofcode2022/aoc-plugin": ["packages/aoc-plugin/src/index.ts"],
-      "@adventofcode2022/util": ["packages/util/src/index.ts"],
-      "@marcuskrahl/aoc2022/day1": ["packages/day1/src/index.ts"]
+      "@adventofcode2022/aoc-plugin": [
+        "packages/aoc-plugin/src/index.ts"
+      ],
+      "@adventofcode2022/util": [
+        "packages/util/src/index.ts"
+      ],
+      "@marcuskrahl/aoc2022/day1": [
+        "packages/day1/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
