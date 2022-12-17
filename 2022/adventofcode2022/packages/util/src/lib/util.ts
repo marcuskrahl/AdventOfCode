@@ -3,6 +3,11 @@ export function* bufferInput(input: string, bufferSize: number) {
     yield [i, input.slice(i, i + bufferSize)] as const;
   }
 }
+export function* bufferArray<T>(input: T[], bufferSize: number) {
+  for (let i = 0; i <= input.length - bufferSize; i++) {
+    yield [i, input.slice(i, i + bufferSize)] as const;
+  }
+}
 
 export function* windowInput<T>(input: readonly T[], windowSize: number) {
   for (let i = 0; i <= input.length; i += windowSize) {
