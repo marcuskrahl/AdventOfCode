@@ -1,0 +1,27 @@
+{
+  "name": "day17",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/day17/src",
+  "targets": {
+    "build": {
+      "executor": "@adventofcode2022/aoc-plugin:build"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/day17/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "run-aoc": {
+      "executor": "@adventofcode2022/aoc-plugin:run-aoc",
+      "options": {
+        "code": "packages/day17/src/lib/code.ts",
+        "input": "packages/day17/src/lib/input"
+      }
+    }
+  },
+  "tags": []
+}
