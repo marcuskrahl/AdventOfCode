@@ -1,4 +1,4 @@
-import { max, sum } from '@adventofcode2022/util';
+import { max, sum, product } from '@adventofcode2022/util';
 
 type Blueprint = {
   oreRobot: { ore: number };
@@ -60,72 +60,175 @@ function advanceState(state: State): State {
   };
 }
 
-const memo = new Map<string, number>();
+/*const ORE_LIMIT = 5;
+const CLAY_LIMIT = 5;
+const OBSIDIAN_LIMIT = 5;
+const ORE_ROBOT_LIMIT = 2;
+const CLAY_ROBOT_LIMIT = 3;
+const OBSIDIAN_ROBOT_LIMIT = 3;
+const GEODE_ROBOT_LIMIT = 3;*/
 
-function simulate(state: State): number {
-  if (state.minute > 25) {
-    const serializedState = JSON.stringify(state);
-    const memoResult = memo.get(serializedState);
-    if (memoResult != undefined) {
-      return memoResult;
-    }
+const ORE_LIMIT = 6;
+const CLAY_LIMIT = 6;
+const OBSIDIAN_LIMIT = 6;
+const ORE_ROBOT_LIMIT = 3;
+const CLAY_ROBOT_LIMIT = 4;
+const OBSIDIAN_ROBOT_LIMIT = 4;
+const GEODE_ROBOT_LIMIT = 4;
+
+let memo = new Map<number, number>();
+
+function simulate(
+  minutesLeft: number,
+  ore: number,
+  clay: number,
+  obsidian: number,
+  oreRobots: number,
+  clayRobots: number,
+  obsidianRobots: number,
+  geodeRobots: number,
+  blueprint: Blueprint
+): number {
+  if (minutesLeft === 0) {
+    return 0;
   }
-  if (state.minute === 25) {
-    return state.geodes;
+
+  if (ore >= 1 << ORE_LIMIT) {
+    ore = (1 << ORE_LIMIT) - 1;
   }
-  let results = [];
-  const advancedState = advanceState(state);
-  if (state.ore >= state.blueprint.oreRobot.ore) {
+  if (clay >= 1 << CLAY_LIMIT) {
+    clay = (1 << CLAY_LIMIT) - 1;
+  }
+  if (obsidian >= 1 << OBSIDIAN_LIMIT) {
+    obsidian = (1 << OBSIDIAN_LIMIT) - 1;
+  }
+  if (oreRobots >= 1 << ORE_ROBOT_LIMIT) {
+    oreRobots = (1 << ORE_ROBOT_LIMIT) - 1;
+  }
+  if (clayRobots >= 1 << CLAY_ROBOT_LIMIT) {
+    clayRobots = (1 << CLAY_ROBOT_LIMIT) - 1;
+  }
+  if (obsidianRobots >= 1 << OBSIDIAN_ROBOT_LIMIT) {
+    obsidianRobots = (1 << OBSIDIAN_ROBOT_LIMIT) - 1;
+  }
+  if (geodeRobots >= 1 << GEODE_ROBOT_LIMIT) {
+    geodeRobots = (1 << GEODE_ROBOT_LIMIT) - 1;
+  }
+  const stateKey =
+    (((((((((((((ore << CLAY_LIMIT) | clay) << OBSIDIAN_LIMIT) | obsidian) <<
+      ORE_ROBOT_LIMIT) |
+      oreRobots) <<
+      CLAY_ROBOT_LIMIT) |
+      clayRobots) <<
+      OBSIDIAN_ROBOT_LIMIT) |
+      obsidianRobots) <<
+      GEODE_ROBOT_LIMIT) |
+      geodeRobots) <<
+      5) |
+    minutesLeft;
+  const memoValue = memo.get(stateKey);
+  if (memoValue != undefined) {
+    return memoValue;
+  }
+  let maxResult = 0;
+  const newOre = ore + oreRobots;
+  const newClay = clay + clayRobots;
+  const newObsidian = obsidian + obsidianRobots;
+  if (ore >= blueprint.oreRobot.ore) {
     //build ore robot
-    const newState = {
-      ...advancedState,
-      ore: advancedState.ore - state.blueprint.oreRobot.ore,
-      oreRobots: advancedState.oreRobots + 1,
-    };
-    results.push(simulate(newState));
+    maxResult = Math.max(
+      maxResult,
+      geodeRobots +
+        simulate(
+          minutesLeft - 1,
+          newOre - blueprint.oreRobot.ore,
+          newClay,
+          newObsidian,
+          oreRobots + 1,
+          clayRobots,
+          obsidianRobots,
+          geodeRobots,
+          blueprint
+        )
+    );
   }
-  if (state.ore >= state.blueprint.clayRobot.ore) {
+  if (ore >= blueprint.clayRobot.ore) {
     //build clay robot
-    const newState = {
-      ...advancedState,
-      ore: advancedState.ore - state.blueprint.clayRobot.ore,
-      clayRobots: advancedState.clayRobots + 1,
-    };
-    results.push(simulate(newState));
+    maxResult = Math.max(
+      maxResult,
+      geodeRobots +
+        simulate(
+          minutesLeft - 1,
+          newOre - blueprint.clayRobot.ore,
+          newClay,
+          newObsidian,
+          oreRobots,
+          clayRobots + 1,
+          obsidianRobots,
+          geodeRobots,
+          blueprint
+        )
+    );
   }
   if (
-    state.ore >= state.blueprint.obsidianRobot.ore &&
-    state.clay >= state.blueprint.obsidianRobot.clay
+    ore >= blueprint.obsidianRobot.ore &&
+    clay >= blueprint.obsidianRobot.clay
   ) {
     //build obsidian robot
-    const newState = {
-      ...advancedState,
-      ore: advancedState.ore - state.blueprint.obsidianRobot.ore,
-      clay: advancedState.clay - state.blueprint.obsidianRobot.clay,
-      obsidianRobots: advancedState.obsidianRobots + 1,
-    };
-    results.push(simulate(newState));
+    maxResult = Math.max(
+      maxResult,
+      geodeRobots +
+        simulate(
+          minutesLeft - 1,
+          newOre - blueprint.obsidianRobot.ore,
+          newClay - blueprint.obsidianRobot.clay,
+          newObsidian,
+          oreRobots,
+          clayRobots,
+          obsidianRobots + 1,
+          geodeRobots,
+          blueprint
+        )
+    );
   }
   if (
-    state.ore >= state.blueprint.geodeRobot.ore &&
-    state.obsidian >= state.blueprint.geodeRobot.obsidian
+    ore >= blueprint.geodeRobot.ore &&
+    obsidian >= blueprint.geodeRobot.obsidian
   ) {
     //build geode robot
-    const newState = {
-      ...advancedState,
-      ore: advancedState.ore - state.blueprint.geodeRobot.ore,
-      obsidian: advancedState.obsidian - state.blueprint.geodeRobot.obsidian,
-      geodeRobots: advancedState.geodeRobots + 1,
-    };
-    results.push(simulate(newState));
+    maxResult = Math.max(
+      maxResult,
+      geodeRobots +
+        simulate(
+          minutesLeft - 1,
+          newOre - blueprint.geodeRobot.ore,
+          newClay,
+          newObsidian - blueprint.geodeRobot.obsidian,
+          oreRobots,
+          clayRobots,
+          obsidianRobots,
+          geodeRobots + 1,
+          blueprint
+        )
+    );
   }
-  results.push(simulate(advancedState));
-  const result = max(results);
-  if (state.minute > 25) {
-    const serializedState = JSON.stringify(state);
-    memo.set(serializedState, result);
-  }
-  return result;
+  maxResult = Math.max(
+    maxResult,
+    geodeRobots +
+      simulate(
+        minutesLeft - 1,
+        newOre,
+        newClay,
+        newObsidian,
+        oreRobots,
+        clayRobots,
+        obsidianRobots,
+        geodeRobots,
+        blueprint
+      )
+  );
+  memo.set(stateKey, maxResult);
+  return maxResult;
 }
 
 function initState(blueprint: Blueprint): State {
@@ -146,11 +249,25 @@ function initState(blueprint: Blueprint): State {
 export function part1(lines: string[]): number {
   const blueprints = lines.map((l) => parseBlueprint(l));
   const result = sum(
-    blueprints.map((blueprint, i) => (i + 1) * simulate(initState(blueprint)))
+    blueprints.map((blueprint, i) => {
+      memo = new Map<number, number>();
+      const result = simulate(24, 0, 0, 0, 1, 0, 0, 0, blueprint);
+      console.log(result);
+      return (i + 1) * result;
+    })
   );
   return result;
 }
 
 export function part2(lines: string[]): number {
-  return 0;
+  const blueprints = lines.map((l) => parseBlueprint(l)).slice(0, 3);
+  const result = product(
+    blueprints.map((blueprint) => {
+      memo = new Map<number, number>();
+      const result = simulate(32, 0, 0, 0, 1, 0, 0, 0, blueprint);
+      console.log(result);
+      return result;
+    })
+  );
+  return result;
 }

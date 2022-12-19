@@ -65,6 +65,10 @@ export function sum(data: readonly number[]): number {
   return data.reduce((acc, curr) => acc + curr, 0);
 }
 
+export function product(data: readonly number[]): number {
+  return data.reduce((acc, curr) => acc * curr, 1);
+}
+
 export function group3(data: readonly string[]): string[][] {
   return data.reduce(
     (acc: string[][], curr) => {
