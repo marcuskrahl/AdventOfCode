@@ -19,6 +19,6 @@ describe('advent of code day', () => {
   });
 
   it('should solve part2', () => {
-    expect(part2(sampleInput)).toEqual(0);
+    expect(part2(sampleInput)).toEqual(1707);
   });
 });
