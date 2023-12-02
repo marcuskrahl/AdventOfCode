@@ -19,3 +19,11 @@ export function min<T>(arr: readonly T[], cmp: (item: T) => number) {
 export function max<T>(arr: readonly T[], cmp: (item: T) => number) {
   return arr.reduce((max, curr) => (cmp(max) >= cmp(curr) ? max : curr));
 }
+export function assertNotNull<T>(
+  input: T | null | undefined,
+  message?: string,
+): asserts input is T {
+  if (input == undefined) {
+    throw new Error(message ?? 'expected value to be defined');
+  }
+}
