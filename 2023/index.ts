@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-const day = '03';
+const day = '04';
 
 async function run() {
   const input = (
@@ -8,8 +8,15 @@ async function run() {
   ).trim();
   const { part1, part2 } = await import(`./day${day}`);
 
-  console.log('part 1:', part1(input));
-  console.log('part 2:', part2(input));
+  const start1 = performance.now();
+  const result1 = part1(input);
+  const time1 = performance.now() - start1;
+
+  const start2 = performance.now();
+  const result2 = part2(input);
+  const time2 = performance.now() - start2;
+  console.log(`part 1: ${result1} (time: ${time1.toFixed(2)} ms)`);
+  console.log(`part 2: ${result2} (time: ${time2.toFixed(2)} ms)`);
 }
 
 run();
