@@ -5,6 +5,9 @@ export function getLines(input: string): string[] {
 export function sum(numbers: number[]): number {
   return numbers.reduce((sum, n) => sum + n, 0);
 }
+export function product(numbers: number[]): number {
+  return numbers.reduce((product, n) => product * n, 1);
+}
 
 export function first<T>(arr: readonly T[]): T {
   return arr[0];
