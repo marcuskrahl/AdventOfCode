@@ -98,3 +98,12 @@ export function getNeighbors<T>(
     nw: tryGetCoordinate(x - 1, y - 1),
   };
 }
+
+export function* loop<T>(input: T[]) {
+  for (let i = 0; i < input.length; i++) {
+    yield input[i];
+    if (i === input.length - 1) {
+      i = -1;
+    }
+  }
+}
