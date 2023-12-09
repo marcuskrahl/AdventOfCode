@@ -107,3 +107,9 @@ export function* loop<T>(input: T[]) {
     }
   }
 }
+
+export function* pairwise<T>(input: T[]) {
+  for (let i = 0; i < input.length - 1; i++) {
+    yield [input[i], input[i + 1]];
+  }
+}

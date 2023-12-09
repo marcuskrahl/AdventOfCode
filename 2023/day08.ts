@@ -99,14 +99,26 @@ function generatePrimes(): number[] {
 
 const primes = generatePrimes();
 
+function gcd(a: number, b: number): number {
+  while (true) {
+    const r = a % b;
+    a = b;
+    b = r;
+    if (b === 0) {
+      return a;
+    }
+  }
+}
+
+function lcm(a: number, b: number) {
+  return (a * b) / gcd(a, b);
+}
+
 function getGhostLength(movement: string[], directions: DirectionMap): number {
   let nodes = Object.keys(directions).filter((d) => d.endsWith('A'));
   let pathLengths = nodes.map((n) => getLoopCount(n, movement, directions));
-  return product(
-    Array.from(
-      new Set(pathLengths.flatMap((l) => getPrimeFactors(l.offset))).values(),
-    ),
-  );
+  const offsets = pathLengths.map((p) => p.offset);
+  return offsets.reduce(lcm, 1);
 }
 
 export function part2(input: string) {
