@@ -125,3 +125,7 @@ export function printGrid<T extends string>(grid: Grid<T>): void {
   }
   console.log(output);
 }
+
+export function range(start: number, end: number): number[] {
+  return new Array(end - start).fill(undefined).map((_, i) => start + i);
+}
