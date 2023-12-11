@@ -31,7 +31,7 @@ export function assertNotNull<T>(
   }
 }
 
-type Grid<T> = T[][];
+export type Grid<T> = T[][];
 
 export function parseGrid(input: string): Grid<string> {
   return input.split('\n').map((line) => line.trim().split(''));
@@ -112,4 +112,16 @@ export function* pairwise<T>(input: T[]) {
   for (let i = 0; i < input.length - 1; i++) {
     yield [input[i], input[i + 1]];
   }
+}
+
+export function printGrid<T extends string>(grid: Grid<T>): void {
+  let output = '';
+  for (let y = 0; y < grid[0].length; y++) {
+    let line = '';
+    for (let x = 0; x < grid.length; x++) {
+      line += grid[x][y].toString();
+    }
+    output += line + '\r\n';
+  }
+  console.log(output);
 }
