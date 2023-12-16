@@ -130,11 +130,11 @@ export function range(start: number, end: number): number[] {
   return new Array(end - start).fill(undefined).map((_, i) => start + i);
 }
 
-export function mapGrid<T>(
+export function mapGrid<T, U>(
   grid: Grid<T>,
-  mapFunction: (value: T, x: number, y: number) => T,
-): Grid<T> {
-  const newGrid: Grid<T> = [];
+  mapFunction: (value: T, x: number, y: number) => U,
+): Grid<U> {
+  const newGrid: Grid<U> = [];
   for (let x = 0; x < grid.length; x++) {
     newGrid[x] = [];
     for (let y = 0; y < grid.length; y++) {

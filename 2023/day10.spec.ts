@@ -51,8 +51,8 @@ L.L7LFJ|||||FJL7||LJ
 L7JLJL-JLJLJL--JLJ.L`;
 
   it('should solve part 2', () => {
+    expect(part2(inputPart2_3)).toBe(10);
     expect(part2(inputPart2_1)).toBe(4);
     expect(part2(inputPart2_2)).toBe(8);
-    expect(part2(inputPart2_3)).toBe(10);
   });
 });
