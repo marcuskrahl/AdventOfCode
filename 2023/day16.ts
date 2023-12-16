@@ -116,9 +116,15 @@ function printBeamMap(grid: Grid<BeamDirection[]>): void {
 }
 
 function getEnergization(grid: Grid<BeamDirection[]>): number {
-  return sum(
-    mapGrid(grid, (v) => (v.length > 0 ? 1 : 0)).flatMap((row) => row),
-  );
+  let sum = 0;
+  for (let x = 0; x < grid.length; x++) {
+    for (let y = 0; y < grid[0].length; y++) {
+      if (grid[x][y].length > 0) {
+        sum += 1;
+      }
+    }
+  }
+  return sum;
 }
 
 export function part1(input: string) {

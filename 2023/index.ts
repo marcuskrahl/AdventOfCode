@@ -13,8 +13,10 @@ async function run() {
   const time1 = performance.now() - start1;
 
   const start2 = performance.now();
+  console.profile('test');
   const result2 = part2(input);
   const time2 = performance.now() - start2;
+  console.profileEnd('test');
   console.log(`part 1: ${result1} (time: ${time1.toFixed(2)} ms)`);
   console.log(`part 2: ${result2} (time: ${time2.toFixed(2)} ms)`);
 }
