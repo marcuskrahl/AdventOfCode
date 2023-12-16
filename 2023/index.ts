@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-const day = '11';
+const day = '13';
 
 async function run() {
   const input = (
