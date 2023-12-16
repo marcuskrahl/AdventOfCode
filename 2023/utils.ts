@@ -129,3 +129,20 @@ export function printGrid<T extends string>(grid: Grid<T>): void {
 export function range(start: number, end: number): number[] {
   return new Array(end - start).fill(undefined).map((_, i) => start + i);
 }
+
+export function mapGrid<T>(
+  grid: Grid<T>,
+  mapFunction: (value: T, x: number, y: number) => T,
+): Grid<T> {
+  const newGrid: Grid<T> = [];
+  for (let x = 0; x < grid.length; x++) {
+    newGrid[x] = [];
+    for (let y = 0; y < grid.length; y++) {
+      newGrid[x][y] = mapFunction(grid[x][y], x, y);
+    }
+  }
+  return newGrid;
+}
+export function rotateClockwise<T>(grid: Grid<T>): Grid<T> {
+  return mapGrid(grid, (_, x, y) => grid[y][grid.length - x - 1]);
+}
