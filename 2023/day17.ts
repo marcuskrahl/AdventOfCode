@@ -6,60 +6,48 @@ import {
   parseGrid,
   printGrid,
   transpose,
+  tryGetCoordinate,
 } from './utils';
 
 interface DijkstraState {
-  left: [number, number, number];
-  right: [number, number, number];
-  up: [number, number, number];
-  down: [number, number, number];
+  left: number;
+  right: number;
+  up: number;
+  down: number;
 }
 
-function moveDirectToNeighbor(
-  node: [number, number, number],
-  neighbor: [number, number, number],
-  heat: number,
-): boolean {
-  let trackNode = false;
-  if (node[0] + heat < neighbor[1]) {
-    trackNode = true;
-    neighbor[1] = node[0] + heat;
-  }
-  if (node[1] + heat < neighbor[2]) {
-    trackNode = true;
-    neighbor[2] = node[1] + heat;
-  }
-  return trackNode;
-}
-
-function moveIndirectNeighbor(
+function moveInDirection(
   min: number,
-  neighbor: [number, number, number],
-  heat: number,
-): boolean {
-  let trackNode = false;
-  min = min + heat;
-  if (neighbor[0] > min) {
-    neighbor[0] = min;
-    neighbor[1] = min;
-    neighbor[2] = min;
-    trackNode = true;
-  } else if (neighbor[1] > min) {
-    neighbor[1] = min;
-    neighbor[2] = min;
-    trackNode = true;
-  } else if (neighbor[2] > min) {
-    neighbor[2] = min;
-    trackNode = true;
+  grid: Grid<number>,
+  dijkstraGrid: Grid<DijkstraState>,
+  x: number,
+  y: number,
+  xOffset: number,
+  yOffset: number,
+  start: number = 1,
+  finish: number = 3,
+  key: keyof DijkstraState,
+): [number, number][] {
+  let nodesToTrack: [number, number][] = [];
+  let heat = 0;
+  for (let i = 1; i <= finish; i++) {
+    const xi = x + xOffset * i;
+    const yi = y + yOffset * i;
+    const heatNode = tryGetCoordinate(grid, xi, yi);
+    if (heatNode === undefined) {
+      return nodesToTrack;
+    }
+    heat += heatNode;
+    if (i < start) {
+      continue;
+    }
+    let node = tryGetCoordinate(dijkstraGrid, xi, yi);
+    if (node != undefined && node[key] > min + heat) {
+      node[key] = min + heat;
+      nodesToTrack.push([xi, yi]);
+    }
   }
-  return trackNode;
-}
-
-function getMin(
-  n1: [number, number, number],
-  n2: [number, number, number],
-): number {
-  return min(n1.concat(n2), (n) => n);
+  return nodesToTrack;
 }
 
 function expandNodeToNeighbors(
@@ -67,93 +55,82 @@ function expandNodeToNeighbors(
   dijkstraGrid: Grid<DijkstraState>,
   x: number,
   y: number,
+  start: number,
+  finish: number,
 ): [number, number][] {
-  const neighbors = getNeighbors(dijkstraGrid, x, y);
   const node = dijkstraGrid[x][y];
   if (node == undefined) {
     throw new Error(`node undefined for ${x} ${y}`);
   }
-  const trackedNodes: [number, number][] = [];
-  if (neighbors.n !== undefined) {
-    const heat = grid[x][y - 1];
-    const min = getMin(node.left, node.right);
-    let t1 = moveDirectToNeighbor(node.up, neighbors.n.up, heat);
-    let t2 = moveIndirectNeighbor(min, neighbors.n.up, heat);
-    let t3 = moveIndirectNeighbor(min, neighbors.n.up, heat);
-    if (t1 || t2 || t3) {
-      trackedNodes.push([x, y - 1]);
-    }
-  }
-
-  if (neighbors.e != undefined) {
-    const heat = grid[x + 1][y];
-    const min = getMin(node.up, node.down);
-    let t1 = moveDirectToNeighbor(node.right, neighbors.e.right, heat);
-    let t2 = moveIndirectNeighbor(min, neighbors.e.right, heat);
-    let t3 = moveIndirectNeighbor(min, neighbors.e.right, heat);
-    if (t1 || t2 || t3) {
-      trackedNodes.push([x + 1, y]);
-    }
-  }
-  if (neighbors.s !== undefined) {
-    const heat = grid[x][y + 1];
-    const min = getMin(node.left, node.right);
-    let t1 = moveDirectToNeighbor(node.down, neighbors.s.down, heat);
-    let t2 = moveIndirectNeighbor(min, neighbors.s.down, heat);
-    let t3 = moveIndirectNeighbor(min, neighbors.s.down, heat);
-    if (t1 || t2 || t3) {
-      trackedNodes.push([x, y + 1]);
-    }
-  }
-  if (neighbors.w != undefined) {
-    const heat = grid[x - 1][y];
-    const min = getMin(node.up, node.down);
-    let t1 = moveDirectToNeighbor(node.left, neighbors.w.left, heat);
-    let t2 = moveIndirectNeighbor(min, neighbors.w.left, heat);
-    let t3 = moveIndirectNeighbor(min, neighbors.w.left, heat);
-    if (t1 || t2 || t3) {
-      trackedNodes.push([x - 1, y]);
-    }
-  }
-  return trackedNodes;
+  return [
+    ...moveInDirection(
+      Math.min(node.left, node.right),
+      grid,
+      dijkstraGrid,
+      x,
+      y,
+      0,
+      -1,
+      start,
+      finish,
+      'up',
+    ),
+    ...moveInDirection(
+      Math.min(node.left, node.right),
+      grid,
+      dijkstraGrid,
+      x,
+      y,
+      0,
+      1,
+      start,
+      finish,
+      'down',
+    ),
+    ...moveInDirection(
+      Math.min(node.up, node.down),
+      grid,
+      dijkstraGrid,
+      x,
+      y,
+      -1,
+      0,
+      start,
+      finish,
+      'left',
+    ),
+    ...moveInDirection(
+      Math.min(node.up, node.down),
+      grid,
+      dijkstraGrid,
+      x,
+      y,
+      1,
+      0,
+      start,
+      finish,
+      'right',
+    ),
+  ];
 }
 
-function dijkstraMin(state: DijkstraState): number {
-  return Math.min(
-    getMin(state.up, state.down),
-    getMin(state.left, state.right),
-  );
-}
-
-function shortestPath(grid: Grid<number>): number {
+function shortestPath(
+  grid: Grid<number>,
+  start: number,
+  finish: number,
+): number {
   const dijkstraGrid: Grid<DijkstraState> = mapGrid(grid, () => ({
-    left: [
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-    ],
-    right: [
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-    ],
-    down: [
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-    ],
-    up: [
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-    ],
+    left: Number.MAX_SAFE_INTEGER,
+    right: Number.MAX_SAFE_INTEGER,
+    down: Number.MAX_SAFE_INTEGER,
+    up: Number.MAX_SAFE_INTEGER,
   }));
   const nodesToVisit: [number, number][] = [[0, 0]];
   dijkstraGrid[0][0] = {
-    left: [0, 0, 0],
-    right: [0, 0, 0],
-    down: [0, 0, 0],
-    up: [0, 0, 0],
+    left: 0,
+    right: 0,
+    down: 0,
+    up: 0,
   };
   let i = 0;
   while (i++ >= 0) {
@@ -163,19 +140,29 @@ function shortestPath(grid: Grid<number>): number {
     if (x === undefined || y === undefined) {
       break;
     }
-    nodesToVisit.push(...expandNodeToNeighbors(grid, dijkstraGrid, x, y));
+    nodesToVisit.push(
+      ...expandNodeToNeighbors(grid, dijkstraGrid, x, y, start, finish),
+    );
   }
 
+  /*printGrid(
+    mapGrid(dijkstraGrid, (v) =>
+      Math.min(v.left, v.right, v.down, v.up).toString().padStart(3),
+    ),
+  );*/
   const endNode =
     dijkstraGrid[dijkstraGrid.length - 1][dijkstraGrid[0].length - 1];
-  const min1 = getMin(endNode.up, endNode.down);
-  const min2 = getMin(endNode.left, endNode.right);
+  const min1 = Math.min(endNode.up, endNode.down);
+  const min2 = Math.min(endNode.left, endNode.right);
   return Math.min(min1, min2);
 }
 
 export function part1(input: string) {
   const grid = mapGrid(transpose(parseGrid(input)), (v) => parseInt(v, 10));
-  return shortestPath(grid);
+  return shortestPath(grid, 1, 3);
 }
 
-export function part2(input: string) {}
+export function part2(input: string) {
+  const grid = mapGrid(transpose(parseGrid(input)), (v) => parseInt(v, 10));
+  return shortestPath(grid, 4, 10);
+}

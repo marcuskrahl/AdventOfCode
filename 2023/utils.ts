@@ -64,6 +64,16 @@ export function reduceGrid<T, U>(
   return result;
 }
 
+export const tryGetCoordinate = <T>(grid: Grid<T>, xe: number, ye: number) => {
+  if (xe < 0 || xe >= grid.length) {
+    return undefined;
+  }
+  if (ye < 0 || ye >= grid[xe].length) {
+    return undefined;
+  }
+  return grid[xe][ye];
+};
+
 export function getNeighbors<T>(
   grid: Grid<T>,
   x: number,
@@ -78,24 +88,17 @@ export function getNeighbors<T>(
   w: T | undefined;
   nw: T | undefined;
 } {
-  const tryGetCoordinate = (xe: number, ye: number) => {
-    if (xe < 0 || xe >= grid.length) {
-      return undefined;
-    }
-    if (ye < 0 || ye >= grid[xe].length) {
-      return undefined;
-    }
-    return grid[xe][ye];
-  };
+  const tryGetCoordinateLocal = (x: number, y: number) =>
+    tryGetCoordinate(grid, x, y);
   return {
-    n: tryGetCoordinate(x, y - 1),
-    ne: tryGetCoordinate(x + 1, y - 1),
-    e: tryGetCoordinate(x + 1, y),
-    se: tryGetCoordinate(x + 1, y + 1),
-    s: tryGetCoordinate(x, y + 1),
-    sw: tryGetCoordinate(x - 1, y + 1),
-    w: tryGetCoordinate(x - 1, y),
-    nw: tryGetCoordinate(x - 1, y - 1),
+    n: tryGetCoordinateLocal(x, y - 1),
+    ne: tryGetCoordinateLocal(x + 1, y - 1),
+    e: tryGetCoordinateLocal(x + 1, y),
+    se: tryGetCoordinateLocal(x + 1, y + 1),
+    s: tryGetCoordinateLocal(x, y + 1),
+    sw: tryGetCoordinateLocal(x - 1, y + 1),
+    w: tryGetCoordinateLocal(x - 1, y),
+    nw: tryGetCoordinateLocal(x - 1, y - 1),
   };
 }
 
@@ -137,7 +140,7 @@ export function mapGrid<T, U>(
   const newGrid: Grid<U> = [];
   for (let x = 0; x < grid.length; x++) {
     newGrid[x] = [];
-    for (let y = 0; y < grid.length; y++) {
+    for (let y = 0; y < grid[0].length; y++) {
       newGrid[x][y] = mapFunction(grid[x][y], x, y);
     }
   }

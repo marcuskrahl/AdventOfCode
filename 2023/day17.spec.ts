@@ -1,4 +1,4 @@
-import { part1 } from './day17';
+import { part1, part2 } from './day17';
 
 describe('day 17', () => {
   const input = `2413432311323
@@ -19,5 +19,14 @@ describe('day 17', () => {
     expect(part1(input)).toBe(102);
   });
 
-  it('should solve part 2', () => {});
+  const input2 = `111111111111
+999999999991
+999999999991
+999999999991
+999999999991`;
+
+  it('should solve part 2', () => {
+    expect(part2(input)).toBe(94);
+    expect(part2(input2)).toBe(71);
+  });
 });
