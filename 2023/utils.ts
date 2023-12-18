@@ -122,7 +122,7 @@ export function printGrid<T extends string>(grid: Grid<T>): void {
   for (let y = 0; y < grid[0].length; y++) {
     let line = '';
     for (let x = 0; x < grid.length; x++) {
-      line += grid[x][y].toString();
+      line += (grid[x][y] ?? ' ').toString();
     }
     output += line + '\r\n';
   }
@@ -148,4 +148,28 @@ export function mapGrid<T, U>(
 }
 export function rotateClockwise<T>(grid: Grid<T>): Grid<T> {
   return mapGrid(grid, (_, x, y) => grid[y][grid.length - x - 1]);
+}
+export function newGrid<T>(
+  xLength: number,
+  yLength: number,
+  initialValue: T | undefined,
+): Grid<T> {
+  const grid = new Array(xLength).fill(undefined);
+  for (let x = 0; x < xLength; x++) {
+    grid[x] = new Array(yLength).fill(initialValue);
+  }
+  return grid;
+}
+
+export function sumGrid<T>(
+  grid: Grid<T>,
+  sumFunction: (v: T, x: number, y: number) => number,
+): number {
+  let sum = 0;
+  for (let x = 0; x < grid.length; x++) {
+    for (let y = 0; y < grid[0].length; y++) {
+      sum += sumFunction(grid[x][y], x, y);
+    }
+  }
+  return sum;
 }
