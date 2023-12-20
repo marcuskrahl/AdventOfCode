@@ -173,3 +173,23 @@ export function sumGrid<T>(
   }
   return sum;
 }
+
+export function gcd(a: number, b: number): number {
+  while (true) {
+    const r = a % b;
+    a = b;
+    b = r;
+    if (b === 0) {
+      return a;
+    }
+  }
+}
+
+export function lcm(...numbers: number[]) {
+  const [a, b, ...rest] = numbers;
+  const result = (a * b) / gcd(a, b);
+  if (rest.length > 0) {
+    return lcm(result, ...rest);
+  }
+  return result;
+}

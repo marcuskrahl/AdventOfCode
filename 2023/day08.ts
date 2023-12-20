@@ -1,4 +1,4 @@
-import { getLines, loop, product } from './utils';
+import { getLines, lcm, loop, product } from './utils';
 
 type DirectionMap = {
   [key: string]: { left: string; right: string };
@@ -98,21 +98,6 @@ function generatePrimes(): number[] {
 }
 
 const primes = generatePrimes();
-
-function gcd(a: number, b: number): number {
-  while (true) {
-    const r = a % b;
-    a = b;
-    b = r;
-    if (b === 0) {
-      return a;
-    }
-  }
-}
-
-function lcm(a: number, b: number) {
-  return (a * b) / gcd(a, b);
-}
 
 function getGhostLength(movement: string[], directions: DirectionMap): number {
   let nodes = Object.keys(directions).filter((d) => d.endsWith('A'));
