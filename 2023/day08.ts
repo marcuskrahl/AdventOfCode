@@ -103,7 +103,7 @@ function getGhostLength(movement: string[], directions: DirectionMap): number {
   let nodes = Object.keys(directions).filter((d) => d.endsWith('A'));
   let pathLengths = nodes.map((n) => getLoopCount(n, movement, directions));
   const offsets = pathLengths.map((p) => p.offset);
-  return offsets.reduce(lcm, 1);
+  return lcm(...offsets);
 }
 
 export function part2(input: string) {
