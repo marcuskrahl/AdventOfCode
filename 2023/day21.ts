@@ -149,6 +149,7 @@ type TileResult = {
   countEven: number;
   countOdd: number;
   lastCount: number;
+  steps: number;
 };
 
 let storedValues: { [key: string]: TileResult } = {};
@@ -173,7 +174,8 @@ function simulateTile(
   const spawnSTotal = [];
   const spawnWTotal = [];
   grid = mapGrid(grid, (v) => (v === 'S' ? '.' : v));
-  for (let i = 0; i < count; i++) {
+  let i = 0;
+  for (i = 0; i < count; i++) {
     spawns
       .filter((s) => s.at === i - 1)
       .forEach((s) => {
@@ -206,13 +208,14 @@ function simulateTile(
     }
   }
   const result = {
-    spawnN: spawnNTotal.slice(0, 3),
-    spawnE: spawnETotal.slice(0, 3),
-    spawnW: spawnWTotal.slice(0, 3),
-    spawnS: spawnSTotal.slice(0, 3),
+    spawnN: spawnNTotal.slice(0, 1),
+    spawnE: spawnETotal.slice(0, 1),
+    spawnW: spawnWTotal.slice(0, 1),
+    spawnS: spawnSTotal.slice(0, 1),
     countEven,
     countOdd,
     lastCount,
+    steps: i + 1,
   };
   storedValues[key] = result;
   //console.log(result);
@@ -356,6 +359,19 @@ export function part2(input: string, steps: number = 26501365) {
     [{ x: start[0], y: start[1], at: -1 }],
     steps,
   );
+  /*console.log(start);
+  console.log(grid.length, grid[0].length);
+  console.log(simulatedTile);
+  let northTile = simulateTile(grid, [{ x: 65, y: 130, at: 0 }], steps);
+  console.log(northTile);
+  let eastTile = simulateTile(grid, [{ x: 0, y: 65, at: 0 }], steps);
+  console.log(eastTile);
+  let westTile = simulateTile(grid, [{ x: 130, y: 65, at: 0 }], steps);
+  console.log(westTile);
+  let southTile = simulateTile(grid, [{ x: 65, y: 0, at: 0 }], steps);
+  console.log(southTile);
+  const horizontalTileLength = (steps - 65) / 131;
+  console.log(horizontalTileLength);*/
   return simulateTilesUntilEnd(grid, simulatedTile, steps);
   //let north = simulateTile(grid, simulatedTile.spawnN, )
   /*let state: GridState = {
