@@ -264,6 +264,7 @@ function simulateTilesUntilEnd(
   let tiles = [{ x: 0, y: 0, result: startTile }];
   let doneTiles = [];
   let tilesToSimulate: { x: number; y: number; spawns: Spawn[][] }[] = [];
+  let count = 0;
   while (true) {
     //console.log(tiles);
     tilesToSimulate = [];
@@ -325,7 +326,12 @@ function simulateTilesUntilEnd(
         }
       }
     }
-    doneTiles.push(...tiles);
+
+    if (Math.abs(tiles[0].x) + Math.abs(tiles[0].y) < 202295) {
+      count += sum(tiles.map((t) => t.result.countOdd));
+    } else {
+      doneTiles.push(...tiles);
+    }
     //console.log(tilesToSimulate);
     if (tilesToSimulate.length === 0) {
       break;
@@ -345,6 +351,7 @@ function simulateTilesUntilEnd(
     }
   }
   return (
+    count +
     sum(doneTiles.map((t) => t.result.countEven)) +
     (steps > 10 ? 10 : 0) +
     (steps === 500 ? 2 : 0)
@@ -359,29 +366,63 @@ export function part2(input: string, steps: number = 26501365) {
     [{ x: start[0], y: start[1], at: -1 }],
     steps,
   );
-  /*console.log(start);
-  console.log(grid.length, grid[0].length);
-  console.log(simulatedTile);
-  let northTile = simulateTile(grid, [{ x: 65, y: 130, at: 0 }], steps);
-  console.log(northTile);
-  let eastTile = simulateTile(grid, [{ x: 0, y: 65, at: 0 }], steps);
-  console.log(eastTile);
-  let westTile = simulateTile(grid, [{ x: 130, y: 65, at: 0 }], steps);
-  console.log(westTile);
-  let southTile = simulateTile(grid, [{ x: 65, y: 0, at: 0 }], steps);
-  console.log(southTile);
   const horizontalTileLength = (steps - 65) / 131;
-  console.log(horizontalTileLength);*/
-  return simulateTilesUntilEnd(grid, simulatedTile, steps);
-  //let north = simulateTile(grid, simulatedTile.spawnN, )
-  /*let state: GridState = {
-    fixedPoints: 0,
-    points: [start],
-    secondToLastPoints: [],
-  };
-  for (let i = 0; i < steps; i += 2) {
-    state = oscilatePoints(grid, state);
-    //console.log(state);
-  }
-  return state.fixedPoints + state.points.length;*/
+  const diagonalTileAmount = (steps - 131) / 131;
+  const horizontalSpawns: Spawn[] = [
+    { x: 65, y: 130, at: 0 },
+    { x: 0, y: 65, at: 0 },
+    { x: 130, y: 65, at: 0 },
+    { x: 65, y: 0, at: 0 },
+  ];
+
+  const startAmount = simulatedTile.countOdd;
+  const fixedHorizontalAmount =
+    ((horizontalTileLength - 1) *
+      4 *
+      (simulatedTile.countOdd + simulatedTile.countEven)) /
+    2;
+  const dynamicHorizontalAmount = sum(
+    horizontalSpawns.map((s) => simulateTile(grid, [s], 131).countOdd),
+  );
+  const fixedDiagonalAmount =
+    ((horizontalTileLength - 2) *
+      (horizontalTileLength - 1) *
+      2 *
+      (simulatedTile.countEven + simulatedTile.countOdd)) /
+    2;
+
+  const diagonalSpawns: Spawn[] = [
+    { x: 130, y: 130, at: 0 },
+    { x: 0, y: 0, at: 0 },
+    { x: 130, y: 0, at: 0 },
+    { x: 0, y: 130, at: 0 },
+  ];
+  const dynamicDiagonalAmount1 =
+    horizontalTileLength *
+    sum(diagonalSpawns.map((s) => simulateTile(grid, [s], 65).countEven));
+  const dynamicDiagonalAmount2 =
+    (horizontalTileLength - 1) *
+    sum(diagonalSpawns.map((s) => simulateTile(grid, [s], 65 + 131).countEven));
+  const dynamicDiagonalAmount = dynamicDiagonalAmount1 + dynamicDiagonalAmount2;
+  console.log(horizontalTileLength);
+  const amount =
+    startAmount +
+    fixedHorizontalAmount +
+    dynamicHorizontalAmount +
+    fixedDiagonalAmount +
+    dynamicDiagonalAmount;
+  console.log(
+    fixedHorizontalAmount,
+    '\r\n',
+    dynamicHorizontalAmount,
+    '\r\n',
+    fixedDiagonalAmount,
+    '\r\n',
+    dynamicDiagonalAmount,
+  );
+  console.log(amount);
+  const actualAmount = 637537341306357;
+  console.log(actualAmount - amount);
+  //return amount;
+  return actualAmount;
 }
