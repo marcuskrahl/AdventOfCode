@@ -133,11 +133,7 @@ export function part1(
 }
 let maxMatches = 0;
 let minE = Number.MAX_SAFE_INTEGER;
-function allIntersect(
-  hailstones: Hailstone[],
-  dx: number,
-  dy: number,
-): boolean {
+function allIntersect(hailstones: Hailstone[], dx: number, dy: number) {
   let px: number | undefined = undefined;
   let py: number | undefined = undefined;
   let equations: { [key: number]: Equation } = {};
@@ -182,7 +178,7 @@ function allIntersect(
       if (!Number.isFinite(x) || !Number.isFinite(y)) {
         console.log('infinite');
         console.log(eq1, eq2);
-        return false;
+        return 0;
       }
       {
         countMatches++;
@@ -244,16 +240,16 @@ function allIntersect(
     maxMatches = countMatches;
   }
   //console.log(countMatches);
-  return false;
+  return countMatches;
 }
 
-function checkXY(hailstones: Hailstone[], x: number, y: number): boolean {
+function checkXY(hailstones: Hailstone[], x: number, y: number) {
   return allIntersect(hailstones, x, y);
 }
 
 function findCorrectTrajectory(hailstones: Hailstone[]) {
   //console.log(hailstones);
-  const minX = Math.min(...hailstones.map((h) => h.v.x));
+  /*const minX = Math.min(...hailstones.map((h) => h.v.x));
   const maxX = Math.max(...hailstones.map((h) => h.v.x));
   const minY = Math.min(...hailstones.map((h) => h.v.y));
   const maxY = Math.max(...hailstones.map((h) => h.v.y));
@@ -383,7 +379,80 @@ function findCorrectTrajectory(hailstones: Hailstone[]) {
         //return `${x} + ${y}`;
       }
     }
+  }*/
+
+  let maxX = 0;
+  let maxY = 0;
+  let maxCount = 0;
+  const limit = 500;
+  for (let x = -limit; x < limit; x++) {
+    for (let y = -limit; y < limit; y++) {
+      let count = checkXY(hailstones, x, y);
+      if (count > maxCount) {
+        maxCount = count;
+        maxX = x;
+        maxY = y;
+      }
+    }
   }
+  console.log(maxX, maxY, maxCount);
+  maxCount = 0;
+  let maxZ = 0;
+  let xzHailstones = hailstones.map((h) => ({
+    p: { x: h.p.x, y: h.p.z, z: h.p.y },
+    v: { x: h.v.x, y: h.v.z, z: h.v.y },
+  }));
+  for (let z = -limit; z < limit; z++) {
+    let count = checkXY(xzHailstones, maxX, z);
+    if (count > maxCount) {
+      console.log(count);
+      maxCount = count;
+      maxZ = z;
+    }
+  }
+  const eq1 = getEquation({
+    ...hailstones[0],
+    v: {
+      x: hailstones[0].v.x - maxX,
+      y: hailstones[0].v.y - maxY,
+      z: hailstones[0].v.z - maxZ,
+    },
+  });
+  const eq2 = getEquation({
+    ...hailstones[1],
+    v: {
+      x: hailstones[1].v.x - maxX,
+      y: hailstones[1].v.y - maxY,
+      z: hailstones[1].v.z - maxZ,
+    },
+  });
+  const eq3 = getEquation({
+    p: {
+      x: hailstones[0].p.x,
+      y: hailstones[0].p.z,
+      z: hailstones[0].p.y,
+    },
+    v: {
+      x: hailstones[0].v.x - maxX,
+      y: hailstones[0].v.z - maxZ,
+      z: hailstones[0].v.y - maxY,
+    },
+  });
+  const eq4 = getEquation({
+    p: {
+      x: hailstones[1].p.x,
+      y: hailstones[1].p.z,
+      z: hailstones[1].p.y,
+    },
+    v: {
+      x: hailstones[1].v.x - maxX,
+      y: hailstones[1].v.z - maxZ,
+      z: hailstones[1].v.y - maxY,
+    },
+  });
+  const intersection = getIntersection(eq1, eq2);
+  const intersection2 = getIntersection(eq3, eq4);
+  return intersection.x + intersection.y + intersection2.y;
 }
 
 export function part2(input: string) {
