@@ -14,7 +14,7 @@ impl Room {
         let name = &input[0..(len-11)];
         Room {
             name: String::from(name),
-            sector_id: sector_id,
+            sector_id,
             checksum: String::from(checksum)
         }
     }
