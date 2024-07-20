@@ -3,6 +3,7 @@ use std::fmt::{Display,Formatter,Result};
 
 mod day01;
 mod day02;
+mod day10;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -61,6 +62,8 @@ fn solve(day: &String, part: u8, input: &String) -> Solution {
         ("01", 2) => Solution::U64(day01::part2(input)),
         ("02", 1) => Solution::U64(day02::part1(input)),
         ("02", 2) => Solution::Str(day02::part2(input)),
+        ("10", 1) => Solution::U64(day10::part1(input, 17, 61)),
+        ("10", 2) => Solution::U64(day10::part2(input)),
         _ => panic!("day not found")
     }
 }
