@@ -59,7 +59,12 @@ fn main() {
         println!("Total: {:?}", total);
             
     } else {
-        let input =  fs::read_to_string(format!("input/day{}.txt", day)).unwrap();
+        let input =  fs::read_to_string(format!("input/day{}.txt", day));
+        if input.is_err() {
+            println!("WARNING: no input defined");
+        }
+
+        let input = input.unwrap_or(String::from(""));
         println!("Start");
         
         let start = Instant::now();
@@ -93,8 +98,8 @@ fn solve(day: &String, part: u8, input: &String) -> Solution {
         ("03", 2) => Solution::U64(day03::part2(input)),
         ("04", 1) => Solution::U64(day04::part1(input)),
         ("04", 2) => Solution::U64(day04::part2(input)),
-        ("05", 1) => Solution::U64(day05::part1(input)),
-        ("05", 2) => Solution::U64(day05::part2(input)),
+        ("05", 1) => Solution::Str(day05::part1(input)),
+        ("05", 2) => Solution::Str(day05::part2(input)),
         ("06", 1) => Solution::U64(day06::part1(input)),
         ("06", 2) => Solution::U64(day06::part2(input)),
         ("07", 1) => Solution::U64(day07::part1(input)),
