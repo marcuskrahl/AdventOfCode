@@ -105,7 +105,7 @@ fn solve(day: &String, part: u8, input: &String) -> Solution {
         ("07", 1) => Solution::U64(day07::part1(input)),
         ("07", 2) => Solution::U64(day07::part2(input)),
         ("08", 1) => Solution::U64(day08::part1(input)),
-        ("08", 2) => Solution::U64(day08::part2(input)),
+        ("08", 2) => Solution::Str(day08::part2(input)),
         ("09", 1) => Solution::U64(day09::part1(input)),
         ("09", 2) => Solution::U64(day09::part2(input)),
         ("10", 1) => Solution::U64(day10::part1(input, 17, 61)),
