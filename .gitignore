@@ -28,6 +28,7 @@
 *.app
 day*
 !2022/**/day*
+!2024/**/day*
 
 # Input files
 input
