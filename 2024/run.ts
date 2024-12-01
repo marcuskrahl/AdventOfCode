@@ -1,4 +1,4 @@
-const year = 2023;
+const year = 2024;
 const sessionId = Deno.env.get("SESSION_COOKIE");
 
 async function loadInput(inputFile: string, day:number) {
@@ -40,12 +40,23 @@ async function loadInput(inputFile: string, day:number) {
 
   const input = await Deno.readTextFile(inputFile);
 
+  let total = 0;
+
   if (part1 !== undefined) {
+    const start = performance.now();
     const result =  part1(input);
+    const end = performance.now() - start;
+    total += end;
     console.log(`Part 1: ${result}`);
+    console.log(`  time: ${end}`);
   }
   if (part2 !== undefined) {
+    const start = performance.now();
     const result = part2(input);
+    const end = performance.now() - start;
+    total += end;
     console.log(`Part 2: ${result}`);
+    console.log(`  time: ${end}`);
   }
+  console.log(`total: ${total}`);
 })();
