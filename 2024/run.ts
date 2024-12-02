@@ -44,7 +44,7 @@ async function loadInput(inputFile: string, day:number) {
 
   if (part1 !== undefined) {
     const start = performance.now();
-    const result =  part1(input);
+    const result =  part1(input.trim());
     const end = performance.now() - start;
     total += end;
     console.log(`Part 1: ${result}`);
@@ -52,7 +52,7 @@ async function loadInput(inputFile: string, day:number) {
   }
   if (part2 !== undefined) {
     const start = performance.now();
-    const result = part2(input);
+    const result = part2(input.trim());
     const end = performance.now() - start;
     total += end;
     console.log(`Part 2: ${result}`);
