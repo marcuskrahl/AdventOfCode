@@ -74,6 +74,16 @@ export const tryGetCoordinate = <T>(grid: Grid<T>, xe: number, ye: number) => {
   return grid[xe][ye];
 };
 
+export const getCoordinateLoop = <T>(grid: Grid<T>, xe: number, ye: number) => {
+  while (xe < 0) {
+    xe += grid.length;
+  }
+  while (ye < 0) {
+    ye += grid[0].length;
+  }
+  return grid[xe % grid.length][ye % grid[0].length];
+};
+
 export function getNeighbors<T>(
   grid: Grid<T>,
   x: number,
