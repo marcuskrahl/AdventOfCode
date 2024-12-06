@@ -4,7 +4,7 @@ import { Grid, parseGrid, printGrid, transpose, tryGetCoordinate } from './utils
 
 type LabGrid = Grid<string>;
 
-function walkGuard(grid: LabGrid, x: number, y: number, dirX: number, dirY: number): number {
+function walkGuard(grid: LabGrid, x: number, y: number, dirX: number, dirY: number): [number, number][] {
   const pos: Set<number> = new Set()
   while(true) {
     pos.add(x * 1000 + y);
@@ -12,7 +12,7 @@ function walkGuard(grid: LabGrid, x: number, y: number, dirX: number, dirY: numb
     const ny = y + dirY;
     const next = tryGetCoordinate(grid, nx, ny);
     if (next === undefined) {
-      return pos.size;
+      return Array.from(pos.values()).map(p => [Math.floor(p / 1000), p%1000] as const)
     }
     if (next === '#') {
       const tmp = dirX;
@@ -69,22 +69,20 @@ function getStartPos(grid: LabGrid): [number, number] {
 export function part1(input: string) {
   const grid = transpose(parseGrid(input));
   const [x,y] = getStartPos(grid);  
-  printGrid(grid);
-  return walkGuard(grid,x,y, 0, -1);
+  return walkGuard(grid,x,y, 0, -1).length;
 }
 
 function getLoopableGrids(grid: LabGrid): number {
   let count = 0;
   const [startX,startY] = getStartPos(grid);  
-  for (let x = 0; x < grid.length; x++) {
-    for(let y = 0; y < grid[0].length; y++) {
+  const positions = walkGuard(grid, startX, startY, 0, -1);
+  for (const [x,y] of positions) {
       if (grid[x][y] !== '.') {
           continue;
       }
       grid[x][y] = '#';
       count += isLoop(grid, startX, startY, 0, -1) ? 1 : 0;
       grid[x][y] = '.';
-    }
   }
   return count;
 }
