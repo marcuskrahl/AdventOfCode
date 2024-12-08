@@ -203,3 +203,8 @@ export function lcm(...numbers: number[]) {
   }
   return result;
 }
+
+export function unique<T>(input:T[], equal: (e1: T, e2:T) => boolean = (e1,e2) => e1 === e2): T[] {
+  return input.filter((v,i) => input.findIndex((e) => equal(v, e)) === i);
+  
+}
