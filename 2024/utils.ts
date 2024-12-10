@@ -52,13 +52,13 @@ export function transpose<T>(input: Grid<T>): Grid<T> {
 
 export function reduceGrid<T, U>(
   grid: Grid<T>,
-  reducer: (acc: U, x: number, y: number) => U,
+  reducer: (acc: U, x: number, y: number, v: T) => U,
   start: U,
 ): U {
   let result = start;
   for (let x = 0; x < grid.length; x++) {
     for (let y = 0; y < grid.length; y++) {
-      result = reducer(result, x, y);
+      result = reducer(result, x, y, grid[x][y]);
     }
   }
   return result;
