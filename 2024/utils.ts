@@ -184,6 +184,20 @@ export function sumGrid<T>(
   return sum;
 }
 
+export function findGrid<T>(
+  grid: Grid<T>,
+  findFunction: (v: T, x: number, y: number) => boolean,
+): [number, number] {
+  for (let x = 0; x < grid.length; x++) {
+    for (let y = 0; y < grid[0].length; y++) {
+      if (findFunction(grid[x][y], x,y)) {
+          return [x,y];
+      }
+    }
+  }
+  return [-1, -1];
+}
+
 export function gcd(a: number, b: number): number {
   while (true) {
     const r = a % b;

@@ -49,14 +49,14 @@ function countQuadrants(pos: {x:number, y:number}[], width: number, height: numb
     } 
     return acc;
   }, {q1: 0, q2: 0, q3: 0, q4: 0});
-  console.log(q);
+  //console.log(q);
   return q.q1 * q.q2 * q.q3 * q.q4;
 }
 
 export function part1(input: string, width: number = 101, height: number = 103) {
   const robots = getLines(input).map(parseRobot)
   const finalCoords = robots.map(r => advanceRobot(r, width, height, 100));
-console.log(finalCoords);
+//console.log(finalCoords);
   return countQuadrants(finalCoords, width, height);
 }
 
@@ -88,7 +88,7 @@ function checkTree(robots: Robot[], width:number, height: number): boolean {
   //console.log(avgX, sameRobots.length);
   const valid = sameRobots.length;
   if (valid > maxR) {
-    console.log(valid);
+    //console.log(valid);
     maxR = valid;
     printRobots(robots, width, height);
   }
@@ -96,6 +96,9 @@ function checkTree(robots: Robot[], width:number, height: number): boolean {
 }
 
 export function part2(input: string, width: number = 101, height: number = 103) {
+  if (width < 100) {
+    return 0;
+ }
   const buf = new Uint8Array(100);
   let robots = getLines(input).map(parseRobot)
   let i =48;
