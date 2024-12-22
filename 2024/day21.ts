@@ -150,6 +150,7 @@ function codeMovements(code: string): number{
     from = to;
   }
   for (let i = 0; i<2; i++) {
+    console.log(code, min(movements, m => m.length).join(''));
     //console.log(movements[0].join(''));
     //console.log(movements);
     let from: Directional = 'A';
@@ -174,10 +175,10 @@ function codeMovements(code: string): number{
       return inner.filter(i => i.length === minLen);
     }, 1);
     const minLen = minArr(movements.map(i => i.length));
-    console.log(movements.length);
+    //console.log(movements.length);
     movements =  movements.filter(i => i.length === minLen);
-    console.log(movements.length);
-    console.log(minArr(movements.map(i => i.length)));
+    //console.log(movements.length);
+    //console.log(minArr(movements.map(i => i.length)));
   }
   console.log(code, min(movements, m => m.length).join(''));
   return minArr(movements.map(i => i.length));
@@ -193,7 +194,7 @@ export function part1(input: string) {
 }
 
 export function part2(input: string) {
-  return 0;
+  return 0;2
 }
 
 
