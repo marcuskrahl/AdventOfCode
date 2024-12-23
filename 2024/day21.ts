@@ -121,123 +121,52 @@ function isMixed(d: Directional[]): boolean {
   return changes >3;
 }
 
-function minArr(arr:number[]): number {
-  let m = Number.MAX_SAFE_INTEGER;
-  for (let v of arr) {
-    if (v < m) {
-      m = v;
+
+function movementsRec(code: string[], layer: number): number {
+  if (code.length > 2) {
+      throw 'expected max 2 possibilities';
     }
+  if (code.length === 2) {
+    return Math.min(movementsRecSingle(code[0], layer), movementsRecSingle(code[1], layer))
   }
-return m;
+  return movementsRecSingle(code[0], layer);
 }
 
-const shortest: {[key: string]: boolean} = {
-  '<vA': true,
-  '>^^A': false,
-  '>^A': true,
-  '>vA': false,
-  '<^A': true,
-  '<<^^A': true
-} as const;
-
-function getShortest(m1: Directional[], m2: Directional[]): Directional[] {
-  if (m1.length < m2.length) {
-    return m1;
-  }
-  if (m2.length < m1.length) {
-    return m2;
-  }
-  /*const m1len = getMinLayer2Movements(m1);
-  const m2len = getMinLayer2Movements(m2);
-  if (m1len < m2len) {
-    return m1;
-  }
-  if (m2len < m1len) {
-    return m2;
-  }*/
-  /*const m1r = sum(getAllLayer2Movements(m1).map(p => Math.min(...p.map(pi => getMinLayer2Movements(pi)))));
-  const m2r = sum(getAllLayer2Movements(m2).map(p => Math.min(...p.map(pi => getMinLayer2Movements(pi)))));
-  if (m1r < m2r) {
-    return m1;
-  }
-  if (m2r < m1r) {
-    return m2;
-  }*/
-  const m1s = m1.join('');
-  const m2s = m2.join('');
-  if (shortest[m1s] != undefined) {
-    return shortest[m1s] ? m1 : m2;
-  }
-  if (shortest[m2s] != undefined) {
-    return shortest[m2s] ? m2 : m1;
-  }
-  //throw 'cannot determinate';
-  console.log(m1s, m2s);
-  //throw 'cannot determinte';
-  return m1;
-}
-
-function getAllLayer2Movements(movements: Directional[]): Directional[][][] {
-  const result: Directional[][][] =[];
+function getAllLayer2String(code: string): string[][] {
+  const result: string[][] =[];
   let start: Directional = 'A';
-  for (let movement of movements) {
+  for (let movement of code.split('') as Directional[]) {
     let m = layer2Movements(start, movement);
     if (m === undefined) {
       throw 'no movements found';
     } 
     m = m.filter(d => !isMixed(d));
-    result.push(m);
+    result.push(m.map(s => s.join('')));
     start = movement;
   }
   return result;
-};
+}
 
-function getLayer2Movements(movements: Directional[]): Directional[][] {
-  const result: Directional[][] = [];
-  let start: Directional = 'A';
-  for (let movement of movements) {
-    let m = layer2Movements(start, movement);
-    if (m === undefined) {
-      throw 'no movements found';
-    } 
-    m = m.filter(d => !isMixed(d));
-    if (m.length === 1) {
-      result.push(m[0]);
-    } else if (m.length === 2) {
-      result.push(getShortest(m[0],m[1]));
-    }
-    start = movement;
+const memo2: {[key: string]: number} = {};
+
+function movementsRecSingle(code: string, layer: number): number {
+  if (layer === 0) {
+    return code.length;
   }
+  const key = `${code}_${layer}`;
+  if (memo2[key] != undefined) {
+    return memo2[key];
+  }
+  const parts = getAllLayer2String(code);
+  const result =  sum(parts.map(p => movementsRec(p, layer - 1)))
+  memo2[key] = result;
   return result;
-};
+}
 
-function getMinLayer2Movements(movements: Directional[]): number {
-    let from: Directional = 'A'; 
-      let inner: Directional[][] = [];
-      for (let c of movements) {
-        const to  = c as Directional;    
-        let m = layer2Movements(from, to);
-        if (m === undefined) {
-          throw 'no movement found?';
-        }
-        m = m.filter(d => !isMixed(d));
-        //console.log(from ,to ,m![0].join(''));
-        if (inner.length === 0 ) {20
-          inner = m;
-        } else {
-          inner = inner.flatMap(mo => m.map(m1 => [...mo, ...m1]),1)
-        }
-        from = to;
-      }
-    //console.log(inner);
-    const minLen = minArr(inner.map(i => i.length));
-    return minLen;
-};
-
-function codeMovements(code: string, iterations: number): number{
+function codeMovementsTop(code: string, layer: number): number {
   const split = code.split('');
   let from :Numerical= 'A';
-  let movements: Directional[][] = [];
+  let movements: string[][] = [];
   for (let c of split) {
     const to  = c as Numerical;    
     let m = layer1Movements(from, to);
@@ -245,75 +174,17 @@ function codeMovements(code: string, iterations: number): number{
       throw 'no movement found?';
     }
     m = m.filter(d => !isMixed(d));
-    //console.log(m.length);
-    if (m.length === 1 ) {
-      movements.push(m[0]) ;
-    } else {
-      console.log(m.length);
-      movements.push(getShortest(m[0], m[1]));
-    }
+    movements.push(m.map(s => s.join('')));
     from = to;
   }
-  let directionMap: {[key:string]: number} = {};
-  movements.forEach(movement => {
-    const key = movement.join('');
-    directionMap[key] = (directionMap[key] ?? 0) + 1;
-  });
-  for (let i =0; i< iterations; i++) {
-    const codes =Object.keys(directionMap);
-    console.log(directionMap);
-    let newMap: {[key: string]: number}= {};
-    for (let c of codes) {
-      const subResult = getLayer2Movements(c.split('') as Directional[]);
-      for (let s of subResult) {
-        const key = s.join('');
-        newMap[key] = (newMap[key] ?? 0) + directionMap[c];
-      }
-    }
-    directionMap = newMap;
-  }
-  /*for (let i = 0; i<2; i++) {
-    //console.log(code, min(movements, m => m.length).join(''));
-    //console.log(movements[0].join(''));
-    //console.log(movements);
-    let from: Directional = 'A';
-    movements = movements.flatMap(split => {
-      let inner: Directional[][] = [];
-      for (let c of split) {
-        const to  = c as Directional;    
-        let m = layer2Movements(from, to);
-        if (m === undefined) {
-          throw 'no movement found?';
-        }
-        m = m.filter(d => !isMixed(d));
-        //console.log('- ', m.length);
-        //console./log(from ,to ,m![0].join(''));
-        if (inner.length === 0 ) {
-          inner = m;
-        } else {
-          inner = inner.flatMap(mo => m.map(m1 => [...mo, ...m1]),1)
-        }
-        from = to;
-      }
-      const minLen = minArr(inner.map(i => i.length));
-      return inner.filter(i => i.length === minLen);
-    }, 1);
-    const minLen = minArr(movements.map(i => i.length));
-    //console.log(movements.length);
-    movements =  movements.filter(i => i.length === minLen);
-    //console.log(movements.length);
-    //console.log(minArr(movements.map(i => i.length)));
-  }
-  */
-  return sum(Object.entries(directionMap).map(([key, value]) => key.length * value));
-
+  return sum(movements.map(p => movementsRec(p, layer - 1)))
 }
 
 export function part1(input: string) {
   const codes = getLines(input);
   return sum(codes.map(code => {
     const numeric = parseInt(code.replace('A', ''));
-    const codeTargets = codeMovements(code, 2);
+    const codeTargets = codeMovementsTop(code, 3);
     return numeric * codeTargets;
   }));
 }
@@ -322,7 +193,7 @@ export function part2(input: string) {
   const codes = getLines(input);
   return sum(codes.map(code => {
     const numeric = parseInt(code.replace('A', ''));
-    const codeTargets = codeMovements(code, 25);
+    const codeTargets = codeMovementsTop(code, 26);
     return numeric * codeTargets;
   }));
 }
@@ -341,5 +212,5 @@ Deno.test("part1", async () => {
 });
 
 Deno.test("part2", async () => {
-  //assertEquals(part2(sampleInput), 154115708116294);
+  assertEquals(part2(sampleInput), 154115708116294);
 });
