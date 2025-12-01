@@ -3,7 +3,7 @@ const sessionId = Deno.env.get("SESSION_COOKIE");
 
 async function loadInput(inputFile: string, day:number) {
   console.log('loading input');
- const url = `https://adventofcode.com/${year}/day/${day}/input` ;
+  const url = `https://adventofcode.com/${year}/day/${day}/input` ;
   const headers = new Headers();
   headers.set('Cookie', `session=${sessionId}`)
   headers.set('User-Agent', `https://github.com/marcuskrahl/AdventOfCode`)
@@ -18,10 +18,7 @@ async function loadInput(inputFile: string, day:number) {
   await Deno.writeTextFile(inputFile, content);
 }
 
-(async function () {
-  const dayArg = Deno.args[0] as string;
-  
-  const day = Number.parseInt(dayArg, 10);
+async function runDay(day: number) {
   const dayStr = `${day}`.padStart(2, '0');
 
   const sourceFile = `./day${dayStr}.ts`;
@@ -59,4 +56,22 @@ async function loadInput(inputFile: string, day:number) {
     console.log(`  time: ${end}`);
   }
   console.log(`total: ${total}`);
+}
+
+(async function () {
+  
+  const dayArg = Deno.args[0] as string;
+  if (dayArg == 'all') {
+    const start = performance.now();
+    for (let i = 1; i<= 25; i++) {
+      console.log('Running day ' + i);
+      await runDay(i);
+    }
+    const end = performance.now() - start;
+    console.log('========================================================');
+    console.log(`TOTAL: ${end}`);
+  } else {
+    const day = Number.parseInt(dayArg, 10);
+    await runDay(day);
+  }
 })();

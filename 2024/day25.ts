@@ -60,7 +60,7 @@ function overlap(key: KeyOrLock, lock: KeyOrLock): boolean {
 
 export function part1(input: string) {
   const keysAndLocks = parseKeysAndLocks(input);
-  console.log(keysAndLocks);
+  //console.log(keysAndLocks);
   const keys = keysAndLocks.filter(k => k.type === 'key');
   const locks = keysAndLocks.filter(k => k.type === 'lock');
   return sum(keys.map(k => locks.filter(l => overlap(k,l)).length));

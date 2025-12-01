@@ -243,7 +243,7 @@ export function part2(input: string) {
   //splitIntoSubgraphs(graph);
   for (let i = 2; i <= 44; i++) {
     const result = validateSubgraph(graph, swappable, i);
-    console.log(result);
+    //console.log(result);
   }
   //console.log(correctBits); 
   dotOutput(graph);

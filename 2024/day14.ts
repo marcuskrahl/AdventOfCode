@@ -105,7 +105,8 @@ export function part2(input: string, width: number = 101, height: number = 103) 
   for (let i=0; i<48; i++) {
     robots = step(robots, width, height);
   }
-  while(true) {
+  //while(true) {
+  while(false) {
   //while(!checkTree(robots,width, height)) {
     for (let j = 0; j< 101; j++) {
       robots = step(robots, width, height);
