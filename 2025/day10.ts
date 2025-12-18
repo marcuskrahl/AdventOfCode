@@ -140,7 +140,7 @@ function minJoltage3(buttons: number[][], joltages: number[], buttonSlice: numbe
         }
         let found = false
         for (let i =buttonSlice; i<buttons.length; i++) {
-            for (let k = 0; k < buttons[buttonSlice].length; k++) {
+            for (let k = 0; k < buttons[i].length; k++) {
                 if (buttons[i][k] === j) {
                     found = true;
                     break;
@@ -247,6 +247,7 @@ export function part2(input: string) {
   return sum(machines.map((m,i) => {
     let [buttons, joltages] = optimizeMachine(m.buttonsExtended, m.joltages);
     const res = minJoltage3(sortButtons(m.buttonsExtended, m.joltages), m.joltages);
+    //const res = minJoltage3(m.buttonsExtended, m.joltages);
     console.log(i + 1, res); 
     return res; 
     }) );
