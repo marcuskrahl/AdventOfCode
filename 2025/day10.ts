@@ -236,6 +236,217 @@ function sortButtons(buttons: number[][], joltages: number[]): number[][] {
     });
 }
 
+/**
+ * Bringt eine erweiterte Matrix in reduzierte Zeilenstufenform (RREF)
+ * @param {number[][]} matrix - m x (n+1) erweiterte Matrix
+ * @param {number} eps - numerische Toleranz
+ * @returns {number[][]} RREF-Matrix
+ */
+function rref(matrix: number[][], eps = 1e-10) {
+  const A = matrix.map(row => row.slice());
+  const rows = A.length;
+  const cols = A[0].length;
+
+  let lead = 0;
+
+  for (let r = 0; r < rows; r++) {
+    if (lead >= cols) break;
+
+    let i = r;
+    while (Math.abs(A[i][lead]) < eps) {
+      i++;
+      if (i === rows) {
+        i = r;
+        lead++;
+        if (lead === cols) return A;
+      }
+    }
+
+    // Zeilen tauschen
+    [A[i], A[r]] = [A[r], A[i]];
+
+    // Pivot normalisieren
+    const lv = A[r][lead];
+    for (let j = 0; j < cols; j++) {
+      A[r][j] /= lv;
+    }
+
+    // Spalte eliminieren
+    for (let i2 = 0; i2 < rows; i2++) {
+      if (i2 !== r) {
+        const lv2 = A[i2][lead];
+        for (let j = 0; j < cols; j++) {
+          A[i2][j] -= lv2 * A[r][j];
+        }
+      }
+    }
+
+    lead++;
+  }
+
+  return A;
+}
+
+/**
+ * Erzeugt eine Parameterlösung aus der RREF
+ * @param {number[][]} rrefMatrix
+ * @param {number} eps
+ * @returns {object} Lösungsbeschreibung
+ */
+function extractSolution(rrefMatrix: number[][], eps = 1e-10) {
+  const rows = rrefMatrix.length;
+  const cols = rrefMatrix[0].length;
+  const vars = cols - 1;
+
+  const pivotCols = new Set();
+  const solution = Array(vars).fill(null);
+
+  // Pivotspalten finden
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < vars; j++) {
+      if (Math.abs(rrefMatrix[i][j] - 1) < eps) {
+        pivotCols.add(j);
+
+        // rechte Seite
+        solution[j] = {
+          constant: rrefMatrix[i][vars],
+          coeffs: {}
+        };
+
+        // freie Variablen einsammeln
+        for (let k = 0; k < vars; k++) {
+          if (!pivotCols.has(k) && Math.abs(rrefMatrix[i][k]) > eps) {
+            solution[j].coeffs[k] = -rrefMatrix[i][k];
+          }
+        }
+        break;
+      }
+    }
+  }
+
+  // freie Variablen markieren
+  const freeVars = [];
+  for (let i = 0; i < vars; i++) {
+    if (!pivotCols.has(i)) {
+      solution[i] = { free: true };
+      freeVars.push(i);
+    }
+  }
+
+  return { solution, freeVars };
+}
+
+function evaluateSolution(solutionData: ReturnType<typeof extractSolution>, params:{[key: number]: number} = {}) {
+  const result:{ [key: number]: number} = [];
+
+  solutionData.solution.forEach((entry, i) => {
+    if (entry.free) {
+      result[i] = params[i] ?? 0;
+    } else {
+      let value = entry.constant;
+      for (const k in entry.coeffs) {
+        value += entry.coeffs[k] * (params[k as unknown as number] ?? 0);
+      }
+      result[i] = value;
+    }
+  });
+
+  return result;
+}
+
+function calculateResult (matrix:number[][], freeVariables: number[], values: {[key: number]: number}) {
+    let sum = 0;
+    for (let y= 0; y < matrix.length; y++) {
+        let val = 0;
+        for (let f = 0; f < freeVariables.length; f++) {
+            const x = freeVariables[f];
+            val += -1 * matrix[y][x] * values[x];
+        }
+        val += matrix[y].at(-1)!;
+        if (val < -1e-10) {
+        //if (val < 0) {
+            return Number.MAX_SAFE_INTEGER;
+        }
+        if (Math.abs(val - Math.round(val)) > 1e-6) {
+            return Number.MAX_SAFE_INTEGER;
+        }
+        sum += val;
+    }
+    for (let f = 0; f < freeVariables.length; f++) {
+        sum += values[freeVariables[f]];
+    }
+    return sum
+}
+
+function findMinFreeVariables(matrix: number[][], freeVariables: number[], unsetVariables: number[], values: {[key: number]: number}, maxPresses: number): number {
+    if (freeVariables.length === 0) {
+        return calculateResult(matrix, freeVariables, {});
+    }
+    
+    if (unsetVariables.length === 0) {
+        let min = Number.MAX_SAFE_INTEGER;
+        for (let i=0; i<maxPresses; i++) {
+            const res = calculateResult(matrix, freeVariables, values);
+            if (res < min) {
+                min = res;
+            }
+        }
+        return min;
+    } else {
+        let [variable, ...rest] = unsetVariables;
+        let min = Number.MAX_SAFE_INTEGER;
+        for (let i = 0; i < maxPresses; i++) {
+            values[variable] = i;
+            const result = findMinFreeVariables(matrix, freeVariables, rest, values, maxPresses);
+            if (result < min) {
+                min = result;
+            }
+        }
+        return min;
+    }    
+}
+
+function minJoltageLGS(buttons: number[][], joltages: number[]): number {
+    const matrix: number[][] = [];
+    for (let j = 0; j < joltages.length; j++) {
+        matrix[j] = [];
+        for (let i =0 ;i < buttons.length; i++) {
+            matrix[j][i] = buttons[i].includes(j) ? 1 : 0;
+        }
+        matrix[j][buttons.length] = joltages[j];
+    }
+
+    //console.table(matrix);
+
+    const rrefMatrix = rref(matrix);
+    //console.table(rrefMatrix);
+
+    const solutionData = extractSolution(rrefMatrix);
+    //console.log("Freie Variablen:", solutionData.freeVars, solutionData.freeVars.length);
+
+    /*const numericSolution = evaluateSolution(solutionData, {
+    3: 2, // x4 = s
+    5: 1  // x6 = t
+    });*/
+
+    //console.log("Konkrete Lösung:", numericSolution);
+    let maxPresses = Math.max(...joltages);
+    const result =  findMinFreeVariables(rrefMatrix, solutionData.freeVars, [...solutionData.freeVars], {}, maxPresses);
+    if (result >= 1000) {
+        console.log(solutionData.freeVars);
+        console.table(rrefMatrix);
+    }
+    if (Math.abs(Math.round(result) - result) > 1e-5) {
+        console.log('ERROR');
+        console.table(solutionData.freeVars);
+        console.table(rrefMatrix);
+    }
+    return Math.round(result);
+}
+
+
+
+
 export function part1(input: string) {
     const machines = getLines(input).map(i => parseMachine(i));
     return sum(machines.map(m => minPresses(m)));
@@ -244,13 +455,22 @@ export function part1(input: string) {
 export function part2(input: string) {
   const machines = getLines(input).map(i => parseMachine(i));
   //console.log(machines.filter(m => m.buttonsExtended.length > m.joltages.length).length, machines.length)
-  return sum(machines.map((m,i) => {
+  /*return sum(machines.map((m,i) => {
     let [buttons, joltages] = optimizeMachine(m.buttonsExtended, m.joltages);
     const res = minJoltage3(sortButtons(m.buttonsExtended, m.joltages), m.joltages);
     //const res = minJoltage3(m.buttonsExtended, m.joltages);
     console.log(i + 1, res); 
     return res; 
-    }) );
+    }) );*/
+     return sum(machines.map((m,i) => {
+        const result = minJoltageLGS(m.buttonsExtended, m.joltages);
+        if (result >= Number.MAX_SAFE_INTEGER - 1) {
+            console.log('invalid result ', i);
+        }
+        console.log(result);
+        return result;
+        
+}));
 }
 
 
