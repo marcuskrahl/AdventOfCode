@@ -2,6 +2,10 @@ export function getLines(input: string): string[] {
   return input.split('\n').map((l) => l.trim());
 }
 
+export function getInputParts(input:string): string[] {
+  return input.split(/\n\s*\n/g);
+}
+
 export function sum(numbers: number[]): number {
   return numbers.reduce((sum, n) => sum + n, 0);
 }
